@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Linux Navigation — Cheat Sheet</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<article class="reference">
+<header class="lesson-header">
+<p class="eyebrow">Reference</p>
+<h1>Linux Navigation Cheat Sheet</h1>
+<p class="tagline">Companion to <a href="../lessons/0001-finding-your-way-around.html">Lesson 0001: Finding Your Way Around</a></p>
+</header>
+
+<table class="ref-table">
+<thead><tr><th>Command</th><th>Does</th></tr></thead>
+<tbody>
+<tr><td><code>pwd</code></td><td>Print full path of current directory</td></tr>
+<tr><td><code>ls</code></td><td>List contents of current directory</td></tr>
+<tr><td><code>ls -a</code></td><td>Include hidden files (dotfiles)</td></tr>
+<tr><td><code>ls -l</code></td><td>Long format: permissions, owner, size, date</td></tr>
+<tr><td><code>ls -la</code></td><td>Both of the above together</td></tr>
+<tr><td><code>cd &lt;dir&gt;</code></td><td>Move into <code>&lt;dir&gt;</code> (relative or absolute path)</td></tr>
+<tr><td><code>cd ..</code></td><td>Move up one level, to the parent directory</td></tr>
+<tr><td><code>cd ~</code> / <code>cd</code></td><td>Jump to home directory</td></tr>
+<tr><td><code>cd -</code></td><td>Jump to the previous directory</td></tr>
+</tbody>
+</table>
+
+<h2>Paths</h2>
+<ul>
+<li>Absolute: starts with <code>/</code> — works from anywhere, e.g. <code>/home/you/Documents</code></li>
+<li>Relative: no leading <code>/</code> — interpreted from current directory, e.g. <code>../Downloads</code></li>
+<li><code>.</code> = current directory, <code>..</code> = parent directory, <code>~</code> = home directory</li>
+</ul>
+
+<h2><code>ls -l</code> permission bits</h2>
+<pre><code>-rw-r--r--  1 you  staff  220 Jun 10 18:02 .bashrc</code></pre>
+<p>Reading the first 10 characters of that line, left to right:</p>
+<table class="ref-table">
+<thead><tr><th>Position</th><th>Chars</th><th>Means</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><code>-</code></td><td>Type: <code>-</code> regular file, <code>d</code> directory, <code>l</code> symlink</td></tr>
+<tr><td>2–4</td><td><code>rw-</code></td><td>Owner's permissions (read, write, execute)</td></tr>
+<tr><td>5–7</td><td><code>r--</code></td><td>Group's permissions</td></tr>
+<tr><td>8–10</td><td><code>r--</code></td><td>Everyone else's permissions</td></tr>
+</tbody>
+</table>
+
+<p class="source-note">Source: <a href="https://linuxcommand.org/tlcl.php" target="_blank" rel="noopener">The Linux Command Line</a> — William Shotts.</p>
+</article>
+</body>
+</html>

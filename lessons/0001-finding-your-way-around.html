@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finding Your Way Around | Lesson 0001</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<article>
+<header class="lesson-header">
+<p class="eyebrow">Lesson 0001 · Linux Command Line Confidence</p>
+<h1>Finding Your Way Around</h1>
+<p class="tagline">Four commands that work in every terminal you'll ever open — your own machine, a GitHub Codespace, or your Synology NAS over SSH.</p>
+</header>
+
+<section>
+<h2>Why this first</h2>
+<p>Every terminal session starts the same way: you're "in" some directory (folder), and you can't do much until you know where that is and how to move around. This is true whether you're poking around your Synology NAS, working inside a cloned GitHub repo, or sitting at any Linux box. Get comfortable with these four commands and the rest of the terminal stops feeling like a black box.</p>
+<div class="callout callout--safe">
+<strong>Everything in this lesson is read-only.</strong> None of these commands can change, move, or delete anything. Safe to run on your own machine, a spare Linux box, or your NAS over SSH.
+</div>
+</section>
+
+<section>
+<h2>The four commands</h2>
+
+<h3><code>pwd</code> — print working directory</h3>
+<p>Answers one question: <em>where am I right now?</em> Run it with no arguments:</p>
+<pre><code>$ pwd
+/home/yourname</code></pre>
+<p>That output is your <strong>working directory</strong> — the folder the shell currently considers "here." Every relative path you type is interpreted starting from this.</p>
+
+<h3><code>ls</code> — list</h3>
+<p>Shows what's inside the working directory.</p>
+<pre><code>$ ls
+Documents  Downloads  Pictures</code></pre>
+<p>Two flags you'll use constantly:</p>
+<ul>
+<li><code>ls -a</code> — show hidden files too (anything starting with <code>.</code>, like <code>.ssh</code> or <code>.bashrc</code>)</li>
+<li><code>ls -l</code> — "long" format: permissions, owner, size, and modified date for each item</li>
+</ul>
+<p>Combine them: <code>ls -la</code> is probably the single most-typed command in any Linux terminal.</p>
+<pre><code>$ ls -la
+drwxr-xr-x  5 you  staff   160 Jun 12 09:14 .
+drwxr-xr-x  9 you  staff   288 Jun 10 18:02 ..
+-rw-r--r--  1 you  staff   220 Jun 10 18:02 .bashrc
+drwxr-xr-x  3 you  staff    96 Jun 12 09:14 Documents</code></pre>
+<p>The first character of each line tells you the type: <code>d</code> for directory, <code>-</code> for a regular file. The <code>.</code> and <code>..</code> entries always appear — they mean "this directory" and "the parent directory."</p>
+
+<h3><code>cd</code> — change directory</h3>
+<p>Moves your working directory somewhere else.</p>
+<pre><code>$ cd Documents
+$ pwd
+/home/yourname/Documents</code></pre>
+<p>A few shortcuts worth memorizing:</p>
+<ul>
+<li><code>cd ..</code> — go up one level, to the parent directory</li>
+<li><code>cd ~</code>, or just <code>cd</code> with nothing after it — jump straight home</li>
+<li><code>cd -</code> — jump back to wherever you were before your last <code>cd</code></li>
+</ul>
+
+<h3>Absolute vs. relative paths</h3>
+<p>This is the idea that ties the other three together.</p>
+<ul>
+<li>An <strong>absolute path</strong> starts with <code>/</code> and means the same thing no matter where you currently are — e.g. <code>/home/yourname/Documents</code>.</li>
+<li>A <strong>relative path</strong> has no leading <code>/</code> and is interpreted starting from your current working directory — e.g. <code>Documents</code>, or <code>../Downloads</code> (up one, then into <code>Downloads</code>).</li>
+</ul>
+<p>When in doubt, run <code>pwd</code> first. It's the anchor for every relative path you're about to type.</p>
+</section>
+
+<section>
+<h2>Try it</h2>
+<p>Open a terminal — your own machine is fine, you don't need the NAS for this — and work through this, checking your prediction with <code>pwd</code> after each step:</p>
+<ol>
+<li>Run <code>pwd</code>. Note where you are.</li>
+<li>Run <code>ls -la</code>. Find one hidden file (starts with <code>.</code>).</li>
+<li><code>cd</code> into any directory you saw listed.</li>
+<li>Run <code>cd ..</code> and confirm with <code>pwd</code> that you're back where you started.</li>
+<li>Run <code>cd -</code> twice in a row. Notice it toggles between the last two directories you were in.</li>
+</ol>
+</section>
+
+<section>
+<h2>Check your recall</h2>
+<p>Don't scroll back up — answer from memory, then reveal.</p>
+
+<details class="quiz">
+<summary>What does <code>pwd</code> do?</summary>
+<p>Prints the full path of the directory you're currently in.</p>
+</details>
+
+<details class="quiz">
+<summary>What's the difference between <code>ls -a</code> and <code>ls -l</code>?</summary>
+<p><code>-a</code> shows hidden files (dotfiles); <code>-l</code> shows the long format with permissions, owner, size, and date.</p>
+</details>
+
+<details class="quiz">
+<summary>What does <code>cd ..</code> do?</summary>
+<p>Moves you up one level, into the parent of your current directory.</p>
+</details>
+
+<details class="quiz">
+<summary>How can you tell an absolute path from a relative one, just by looking at it?</summary>
+<p>An absolute path starts with a leading slash (<code>/</code>); a relative path doesn't.</p>
+</details>
+</section>
+
+<section class="primary-source">
+<h2>Go deeper</h2>
+<p>Primary source for this lesson: <a href="https://linuxcommand.org/tlcl.php" target="_blank" rel="noopener">The Linux Command Line</a> by William Shotts — free, and its early chapters cover this material in more depth than fits here.</p>
+<p>Quick reference for these commands: <a href="../reference/linux-navigation-cheatsheet.html">Navigation cheat sheet</a>.</p>
+</section>
+
+<footer class="lesson-footer">
+<p>Stuck, curious, or want to go off-script? Just ask — that's what I'm here for between lessons.</p>
+</footer>
+</article>
+</body>
+</html>
