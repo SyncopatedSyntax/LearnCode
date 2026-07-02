@@ -19,6 +19,7 @@
 <section>
 <h2>What SSH actually is</h2>
 <p><strong>SSH</strong> (Secure Shell) opens a terminal <em>on another machine</em> over the network. You type on your laptop, but the commands run on the NAS. That's the whole idea: the same <code>pwd</code>, <code>ls</code>, and <code>cd</code> from <a href="0001-finding-your-way-around.html">Lesson&nbsp;0001</a> now let you walk around the NAS's file system as if you were sitting at it.</p>
+<p><strong>Name origin:</strong> <code>ssh</code> = <em>Secure Shell</em>. A "shell" is the program that reads and runs your commands; "secure" means the whole conversation is encrypted, so nobody else on the network can read it. Every command's origin is collected in the <a href="../reference/command-origins.html">Command Name Origins</a> glossary.</p>
 <div class="callout callout--safe">
 <strong>This whole lesson is read-only.</strong> Every command here only <em>looks</em> — nothing creates, moves, deletes, or changes settings on the NAS. You can run all of it safely.
 </div>
@@ -72,12 +73,14 @@ $ hostname    # what machine am I on? (confirms it's the NAS)
 $ pwd         # where am I? (your home directory on the NAS)
 $ ls          # what's in here?</code></pre>
 <p>Running <code>hostname</code> right after connecting is a great habit — it's a one-second sanity check that you're about to type commands on the NAS and not accidentally on your own laptop.</p>
+<p><strong>Name origins:</strong> <code>whoami</code> is the question "<em>who am i</em>" run together — it answers by printing your username. <code>hostname</code> is simply the <em>host name</em>: the name of the machine (a "host" is any computer on a network). Both say out loud what they do.</p>
 </section>
 
 <section>
 <h2>Leave cleanly</h2>
 <pre><code>$ exit</code></pre>
 <p>This closes the SSH session and drops you back to your own computer's terminal (your prompt name changes back). Pressing <kbd>Ctrl</kbd>+<kbd>D</kbd> does the same thing. That's it — you were a guest, you looked around, you left.</p>
+<p><strong>Name origin:</strong> <code>exit</code> is plain English — a rare, refreshingly literal command name with no abbreviation to decode.</p>
 </section>
 
 <section>
@@ -124,7 +127,7 @@ $ ls          # what's in here?</code></pre>
 <section class="primary-source">
 <h2>Go deeper</h2>
 <p>Primary source for this lesson: <a href="https://kb.synology.com/en-us/DSM/help/DSM/AdminCenter/system_terminal?version=7" target="_blank" rel="noopener">Synology Knowledge Center — Terminal (DSM)</a>, the official page on how SSH is enabled and configured on your NAS.</p>
-<p>Quick reference for these commands: <a href="../reference/ssh-cheatsheet.html">SSH cheat sheet</a>. Navigation refresher: <a href="../reference/linux-navigation-cheatsheet.html">Navigation cheat sheet</a>.</p>
+<p>References: <a href="../reference/ssh-cheatsheet.html">SSH cheat sheet</a> &middot; <a href="../reference/linux-navigation-cheatsheet.html">Navigation cheat sheet</a> &middot; <a href="../reference/command-origins.html">Command Name Origins glossary</a>.</p>
 </section>
 
 <footer class="lesson-footer">

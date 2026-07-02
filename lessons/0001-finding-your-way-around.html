@@ -22,6 +22,7 @@
 <div class="callout callout--safe">
 <strong>Everything in this lesson is read-only.</strong> None of these commands can change, move, or delete anything. Safe to run on your own machine, a spare Linux box, or your NAS over SSH.
 </div>
+<p>One habit that makes these stick: every command name is <em>short for</em> something. I'll point out what as we go — it turns a cryptic couple of letters into a word you can actually remember. The full list lives in the <a href="../reference/command-origins.html">Command Name Origins</a> glossary.</p>
 </section>
 
 <section>
@@ -32,9 +33,11 @@
 <pre><code>$ pwd
 /home/yourname</code></pre>
 <p>That output is your <strong>working directory</strong> — the folder the shell currently considers "here." Every relative path you type is interpreted starting from this.</p>
+<p><strong>Name origin:</strong> <code>pwd</code> = <em>print working directory</em> — the three letters are the initials of its three-word job. Say the words and the command explains itself.</p>
 
 <h3><code>ls</code> — list</h3>
 <p>Shows what's inside the working directory.</p>
+<p><strong>Name origin:</strong> <code>ls</code> = <em>list</em>, with the vowels knocked out — the classic Unix habit of squashing a word down to save keystrokes.</p>
 <pre><code>$ ls
 Documents  Downloads  Pictures</code></pre>
 <p>Two flags you'll use constantly:</p>
@@ -52,6 +55,7 @@ drwxr-xr-x  3 you  staff    96 Jun 12 09:14 Documents</code></pre>
 
 <h3><code>cd</code> — change directory</h3>
 <p>Moves your working directory somewhere else.</p>
+<p><strong>Name origin:</strong> <code>cd</code> = <em>change directory</em> — the initials of the two words, saying exactly what it does.</p>
 <pre><code>$ cd Documents
 $ pwd
 /home/yourname/Documents</code></pre>
@@ -111,7 +115,7 @@ $ pwd
 <section class="primary-source">
 <h2>Go deeper</h2>
 <p>Primary source for this lesson: <a href="https://linuxcommand.org/tlcl.php" target="_blank" rel="noopener">The Linux Command Line</a> by William Shotts — free, and its early chapters cover this material in more depth than fits here.</p>
-<p>Quick reference for these commands: <a href="../reference/linux-navigation-cheatsheet.html">Navigation cheat sheet</a>.</p>
+<p>References: <a href="../reference/linux-navigation-cheatsheet.html">Navigation cheat sheet</a> &middot; <a href="../reference/command-origins.html">Command Name Origins glossary</a>.</p>
 </section>
 
 <footer class="lesson-footer">
