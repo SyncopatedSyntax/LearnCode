@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting Help Yourself | Lesson 0005</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+<article>
+<header class="lesson-header">
+<p class="eyebrow"><a href="../index.html">Linux Command Line Confidence</a> · Lesson 0005</p>
+<h1>Getting Help Yourself</h1>
+<p class="tagline">Every command carries its own manual. Learn to read it and you stop needing anyone — including me — to look things up.</p>
+</header>
+
+<section>
+<h2>Why this is the multiplier</h2>
+<p>You can now navigate, connect, read, and search — all by recalling specific commands. This lesson is different: it's the skill that lets you figure out <em>every other</em> command on your own. That's the real goal of the whole mission — not memorising a list, but being unafraid because you can always ask the machine itself.</p>
+<div class="callout callout--safe">
+<strong>Completely harmless.</strong> Everything here just displays documentation. Nothing to break, on your computer or the NAS — the safest lesson yet.
+</div>
+</section>
+
+<section>
+<h2><code>command --help</code> — the quick reminder</h2>
+<p>Most commands will summarise themselves if you add <code>--help</code>:</p>
+<pre><code>$ ls --help
+Usage: ls [OPTION]... [FILE]...
+List information about the FILEs ...
+  -a, --all      do not ignore entries starting with .
+  -l             use a long listing format
+  ...</code></pre>
+<p>Fast, prints right in place, and perfect when you just need to remember a flag.</p>
+
+<h3>A dash convention worth knowing</h3>
+<p>Look at that <code>-a, --all</code> line — it quietly explains every flag you've met so far:</p>
+<ul>
+<li><strong>One dash + one letter</strong> = the <em>short</em> form: <code>-a</code>, <code>-l</code>, <code>-r</code>, <code>-i</code>. Fast to type.</li>
+<li><strong>Two dashes + a whole word</strong> = the <em>long</em> form: <code>--all</code>, <code>--recursive</code>. Slower, but self-explaining.</li>
+</ul>
+<p>Many flags have both, and <code>-a</code> and <code>--all</code> do exactly the same thing. That's why <code>--help</code> is itself two dashes and a word — it's just the long-form help flag (its short form is often <code>-h</code>).</p>
+<p><strong>Name origin:</strong> <code>--help</code> is literally the word "help" in long-form flag style. No decoding needed.</p>
+</section>
+
+<section>
+<h2><code>man</code> — the full manual</h2>
+<p>When <code>--help</code>'s summary isn't enough, <code>man</code> opens the command's complete manual page:</p>
+<pre><code>$ man ls</code></pre>
+<div class="callout callout--safe">
+<strong>You already know how to drive this.</strong> <code>man</code> opens the manual in <code>less</code> — the exact pager from <a href="0003-reading-files.html">Lesson&nbsp;0003</a>. So: <kbd>Space</kbd> to scroll, <kbd>/word</kbd> then <kbd>Enter</kbd> to search, and — the one that saves everyone — <kbd>q</kbd> to quit back to your prompt.
+</div>
+<p><strong>Name origin:</strong> <code>man</code> = <em>manual</em>. It shows the manual page ("man page") for a command.</p>
+
+<h3>How to read a man page</h3>
+<p>Every man page follows the same skeleton. Once you know the headings, you can jump straight to what you need instead of reading top to bottom:</p>
+<table class="ref-table">
+<thead><tr><th>Section</th><th>What's there</th></tr></thead>
+<tbody>
+<tr><td><strong>NAME</strong></td><td>The command and a one-line description</td></tr>
+<tr><td><strong>SYNOPSIS</strong></td><td>The shape of the command — how to assemble it</td></tr>
+<tr><td><strong>DESCRIPTION</strong></td><td>The full explanation, and every option</td></tr>
+<tr><td><strong>EXAMPLES</strong></td><td>Ready-to-copy real uses (when present — jump here first)</td></tr>
+<tr><td><strong>SEE ALSO</strong></td><td>Related commands worth knowing</td></tr>
+</tbody>
+</table>
+
+<h3>Decoding the SYNOPSIS</h3>
+<p>The SYNOPSIS uses a small notation that trips people up until someone explains it. For example:</p>
+<pre><code>ls [OPTION]... [FILE]...</code></pre>
+<ul>
+<li><strong>Square brackets <code>[ ]</code></strong> = optional. <code>[FILE]</code> means you <em>may</em> give a file, but don't have to.</li>
+<li><strong>Three dots <code>...</code></strong> = "and you can repeat this." <code>[FILE]...</code> means zero, one, or many files.</li>
+<li><strong>Plain words</strong> = type them as-is.</li>
+</ul>
+<p>So that line reads: "<code>ls</code>, optionally followed by any number of options, optionally followed by any number of files." That notation is the same across almost every man page.</p>
+</section>
+
+<section>
+<h2>When you don't even know the command's name</h2>
+<p>This is the hidden gem. <code>man -k</code> (or its twin <code>apropos</code>) searches the one-line descriptions of <em>every</em> installed manual for a keyword — so you can find a command by what it <em>does</em>:</p>
+<pre><code>$ man -k "disk space"
+df (1)    - report file system disk space usage
+du (1)    - estimate file space usage</code></pre>
+<p>It's <a href="0004-finding-things.html">Lesson&nbsp;0004</a>'s idea — searching — turned on the manuals themselves. (The <code>(1)</code> just marks which section of the manual it's in; section 1 is everyday user commands.)</p>
+<p><strong>Name origins:</strong> the <code>-k</code> is for <em>keyword</em>. And <code>apropos</code> is an actual English word — borrowed from French — meaning "concerning" or "with regard to." <code>apropos disk</code> literally asks for commands "concerning disk." A rare command whose name is a whole word with a real meaning.</p>
+</section>
+
+<section>
+<h2>One honest note for the NAS</h2>
+<div class="callout callout--caution">
+<strong>Minimal systems often skip <code>man</code>.</strong> To save space, many stripped-down setups — NAS boxes very much included — don't install the full manual pages. If <code>man</code> says "command not found" or comes up empty on your Synology, that's normal: fall back to <code>--help</code>, which is built into the commands themselves and almost always works. On your own computer, <code>man</code> will be there.
+</div>
+</section>
+
+<section>
+<h2>Try it</h2>
+<ol>
+<li>Run <code>ls --help</code> and find a flag you haven't used yet.</li>
+<li>Run <code>man ls</code>. Scroll with <kbd>Space</kbd>, search for <code>-l</code> by typing <code>/-l</code> then <kbd>Enter</kbd>, then quit with <kbd>q</kbd>.</li>
+<li>In that man page, find the SYNOPSIS line and read it using the bracket/dots notation above.</li>
+<li>Run <code>man -k time</code> (or <code>apropos time</code>) and skim how many commands mention "time."</li>
+</ol>
+</section>
+
+<section>
+<h2>Check your recall</h2>
+<p>Answer from memory first, then reveal.</p>
+
+<details class="quiz">
+<summary>You're inside a <code>man</code> page and your prompt has vanished. How do you get out?</summary>
+<p>Press <kbd>q</kbd> — man pages open in <code>less</code>, so the same quit key applies.</p>
+</details>
+
+<details class="quiz">
+<summary>In a SYNOPSIS, what do <code>[ ]</code> and <code>...</code> mean?</summary>
+<p>Square brackets mean optional; three dots mean the item can be repeated.</p>
+</details>
+
+<details class="quiz">
+<summary>You want a command but only know what it should do. What do you run?</summary>
+<p><code>man -k keyword</code> (or <code>apropos keyword</code>) to search manuals by description.</p>
+</details>
+
+<details class="quiz">
+<summary><code>man</code> isn't installed on your NAS. What's the fallback?</summary>
+<p>Add <code>--help</code> to the command — it's built in and works almost everywhere.</p>
+</details>
+</section>
+
+<section class="primary-source">
+<h2>Go deeper</h2>
+<p>Primary source for this lesson: <a href="https://linuxcommand.org/tlcl.php" target="_blank" rel="noopener">The Linux Command Line</a> by William Shotts — its early chapters cover the help system and how to read documentation.</p>
+<p>References: <a href="../reference/getting-help-cheatsheet.html">Getting help cheat sheet</a> &middot; <a href="../reference/command-origins.html">Command Name Origins glossary</a>.</p>
+</section>
+
+<footer class="lesson-footer">
+<p>A man page still leaving you puzzled? Paste the confusing part to me — turning dense docs into plain English is exactly what I'm here for.</p>
+</footer>
+</article>
+</body>
+</html>

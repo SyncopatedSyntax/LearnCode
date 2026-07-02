@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting Help — Cheat Sheet</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+<article class="reference">
+<header class="lesson-header">
+<p class="eyebrow"><a href="../index.html">Linux Command Line Confidence</a> · Reference</p>
+<h1>Getting Help Cheat Sheet</h1>
+<p class="tagline">Companion to <a href="../lessons/0005-getting-help.html">Lesson 0005: Getting Help Yourself</a></p>
+</header>
+
+<h2>The three ways to ask</h2>
+<table class="ref-table">
+<thead><tr><th>Command</th><th>Does</th></tr></thead>
+<tbody>
+<tr><td><code>cmd --help</code></td><td>Quick summary, printed in place. Works almost everywhere (NAS too)</td></tr>
+<tr><td><code>man cmd</code></td><td>Full manual page, opened in <code>less</code></td></tr>
+<tr><td><code>man -k word</code></td><td>Find a command by keyword in its description</td></tr>
+<tr><td><code>apropos word</code></td><td>Same as <code>man -k</code></td></tr>
+</tbody>
+</table>
+
+<h2>Inside a <code>man</code> page (it's just <code>less</code>)</h2>
+<table class="ref-table">
+<thead><tr><th>Key</th><th>Does</th></tr></thead>
+<tbody>
+<tr><td><kbd>Space</kbd></td><td>Down one screen</td></tr>
+<tr><td><kbd>/word</kbd> + <kbd>Enter</kbd></td><td>Search</td></tr>
+<tr><td><kbd>q</kbd></td><td>Quit back to the prompt</td></tr>
+</tbody>
+</table>
+
+<h2>Man page skeleton</h2>
+<table class="ref-table">
+<thead><tr><th>Section</th><th>What's there</th></tr></thead>
+<tbody>
+<tr><td>NAME</td><td>Command + one-line description</td></tr>
+<tr><td>SYNOPSIS</td><td>How to assemble the command</td></tr>
+<tr><td>DESCRIPTION</td><td>Full detail and every option</td></tr>
+<tr><td>EXAMPLES</td><td>Copy-ready uses (jump here first)</td></tr>
+<tr><td>SEE ALSO</td><td>Related commands</td></tr>
+</tbody>
+</table>
+
+<h2>Reading the SYNOPSIS notation</h2>
+<ul>
+<li><code>[ ]</code> — optional</li>
+<li><code>...</code> — can be repeated</li>
+<li>plain words — type them as-is</li>
+</ul>
+<p class="source-note">Example: <code>ls [OPTION]... [FILE]...</code> = "ls, then any number of options, then any number of files, all optional."</p>
+
+<h2>The dash convention</h2>
+<ul>
+<li><code>-a</code> — one dash, one letter: <em>short</em> form</li>
+<li><code>--all</code> — two dashes, a word: <em>long</em> form (often the same flag)</li>
+</ul>
+
+<h2>Name origins</h2>
+<table class="ref-table">
+<thead><tr><th>Command</th><th>Short for</th></tr></thead>
+<tbody>
+<tr><td><code>man</code></td><td>manual</td></tr>
+<tr><td><code>--help</code></td><td>"help" (long-form flag)</td></tr>
+<tr><td><code>man -k</code></td><td><code>-k</code> = keyword</td></tr>
+<tr><td><code>apropos</code></td><td>English/French for "concerning"</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout--caution">
+<strong>On the NAS:</strong> full <code>man</code> pages are often not installed to save space. Use <code>--help</code> there — it's built into the commands.
+</div>
+
+<p class="source-note">Source: <a href="https://linuxcommand.org/tlcl.php" target="_blank" rel="noopener">The Linux Command Line</a> — William Shotts.</p>
+</article>
+</body>
+</html>
