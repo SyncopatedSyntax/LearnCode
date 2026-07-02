@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SSH — Cheat Sheet</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+<article class="reference">
+<header class="lesson-header">
+<p class="eyebrow"><a href="../index.html">Linux Command Line Confidence</a> · Reference</p>
+<h1>SSH Cheat Sheet</h1>
+<p class="tagline">Companion to <a href="../lessons/0002-ssh-into-your-nas.html">Lesson 0002: SSH Into Your NAS</a></p>
+</header>
+
+<h2>Connecting</h2>
+<table class="ref-table">
+<thead><tr><th>Command</th><th>Does</th></tr></thead>
+<tbody>
+<tr><td><code>ssh user@host</code></td><td>Connect to <code>host</code> as <code>user</code></td></tr>
+<tr><td><code>ssh -p 2222 user@host</code></td><td>Connect on a non-default port (here, 2222)</td></tr>
+</tbody>
+</table>
+
+<h2>The connect string, decoded</h2>
+<ul>
+<li><code>user</code> — account name (on a Synology, must be in the <em>administrators</em> group)</li>
+<li><code>@</code> — separator, "user <em>at</em> host"</li>
+<li><code>host</code> — the machine's IP (e.g. <code>192.168.1.50</code>) or network name</li>
+</ul>
+
+<h2>First-connection prompts</h2>
+<table class="ref-table">
+<thead><tr><th>Prompt</th><th>What to do</th></tr></thead>
+<tbody>
+<tr><td>Fingerprint: <code>continue connecting (yes/no)?</code></td><td>Type <code>yes</code> (only asked once per machine)</td></tr>
+<tr><td><code>password:</code></td><td>Type it — <strong>nothing shows on screen, that's normal</strong> — then Enter</td></tr>
+</tbody>
+</table>
+
+<h2>Safe look-around commands</h2>
+<table class="ref-table">
+<thead><tr><th>Command</th><th>Does</th></tr></thead>
+<tbody>
+<tr><td><code>whoami</code></td><td>Which account you're logged in as</td></tr>
+<tr><td><code>hostname</code></td><td>Which machine you're on (confirm it's the NAS)</td></tr>
+<tr><td><code>pwd</code></td><td>Current directory</td></tr>
+<tr><td><code>ls</code></td><td>List what's here</td></tr>
+</tbody>
+</table>
+
+<h2>Disconnecting</h2>
+<table class="ref-table">
+<thead><tr><th>Command</th><th>Does</th></tr></thead>
+<tbody>
+<tr><td><code>exit</code></td><td>End the session, return to your own computer</td></tr>
+<tr><td><kbd>Ctrl</kbd>+<kbd>D</kbd></td><td>Same as <code>exit</code></td></tr>
+</tbody>
+</table>
+
+<div class="callout callout--caution">
+<strong>Not covered here (on purpose):</strong> <code>sudo</code>, <code>rm</code>, <code>mv</code>, <code>chmod</code>, and package installs. These change the NAS — learn them deliberately, later.
+</div>
+
+<p class="source-note">Source: <a href="https://kb.synology.com/en-us/DSM/help/DSM/AdminCenter/system_terminal?version=7" target="_blank" rel="noopener">Synology Knowledge Center — Terminal (DSM)</a>.</p>
+</article>
+</body>
+</html>

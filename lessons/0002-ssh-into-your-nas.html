@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SSH Into Your NAS | Lesson 0002</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+<article>
+<header class="lesson-header">
+<p class="eyebrow"><a href="../index.html">Linux Command Line Confidence</a> · Lesson 0002</p>
+<h1>SSH Into Your NAS</h1>
+<p class="tagline">Open a shell on your Synology from your own computer, look around with commands you already know, and leave without touching a thing.</p>
+</header>
+
+<section>
+<h2>What SSH actually is</h2>
+<p><strong>SSH</strong> (Secure Shell) opens a terminal <em>on another machine</em> over the network. You type on your laptop, but the commands run on the NAS. That's the whole idea: the same <code>pwd</code>, <code>ls</code>, and <code>cd</code> from <a href="0001-finding-your-way-around.html">Lesson&nbsp;0001</a> now let you walk around the NAS's file system as if you were sitting at it.</p>
+<div class="callout callout--safe">
+<strong>This whole lesson is read-only.</strong> Every command here only <em>looks</em> — nothing creates, moves, deletes, or changes settings on the NAS. You can run all of it safely.
+</div>
+</section>
+
+<section>
+<h2>The connect command</h2>
+<p>Open a terminal on your own computer (Terminal on Mac, or PowerShell on Windows — both have <code>ssh</code> built in). The command has a simple shape:</p>
+<pre><code>$ ssh admin@192.168.1.50</code></pre>
+<p>Reading it left to right:</p>
+<ul>
+<li><code>ssh</code> — the program that makes the connection</li>
+<li><code>admin</code> — your DSM account name (must be in the NAS's <em>administrators</em> group)</li>
+<li><code>@</code> — just a separator: "this user <em>at</em> that machine"</li>
+<li><code>192.168.1.50</code> — your NAS's address on your network</li>
+</ul>
+<div class="callout callout--safe">
+<strong>Which address?</strong> Whatever you already use to reach your NAS — its IP (like <code>192.168.1.50</code>) or its network name. You can find the IP in DSM under <em>Control Panel → Network</em>, or in your router. Since you already SSH in sometimes, use the same address and account you use now.
+</div>
+<p>If your NAS uses a non-standard SSH port (some setups change it away from the default <code>22</code>), add <code>-p</code> and the number:</p>
+<pre><code>$ ssh -p 2222 admin@192.168.1.50</code></pre>
+</section>
+
+<section>
+<h2>What you'll see the first time</h2>
+
+<h3>1. A fingerprint question</h3>
+<p>On the very first connection to a machine, you'll see something like:</p>
+<pre><code>The authenticity of host '192.168.1.50' can't be established.
+ED25519 key fingerprint is SHA256:9f2c...
+Are you sure you want to continue connecting (yes/no)?</code></pre>
+<p>Type <code>yes</code> and press Enter. This records the NAS's identity so that next time, SSH can confirm it's really the same machine and warn you if something impersonates it. For your own NAS on your own network, <code>yes</code> is the right answer. You'll only see this once per machine.</p>
+
+<h3>2. A password prompt</h3>
+<pre><code>admin@192.168.1.50's password:</code></pre>
+<p>Type your DSM password and press Enter.</p>
+<div class="callout callout--caution">
+<strong>Nothing appears as you type</strong> — no dots, no stars, no moving cursor. This is normal and deliberate (it hides your password's length). Type it anyway and press Enter. This is the one moment that startles every beginner, so now you know.
+</div>
+
+<h3>3. You're in</h3>
+<p>The prompt changes to show the NAS's name — proof you're now "on" the other machine:</p>
+<pre><code>admin@YourNAS:~$</code></pre>
+</section>
+
+<section>
+<h2>Look around (safely)</h2>
+<p>Two of these you already know from Lesson&nbsp;0001; two are new. All four only read information:</p>
+<pre><code>$ whoami      # which account am I logged in as?
+$ hostname    # what machine am I on? (confirms it's the NAS)
+$ pwd         # where am I? (your home directory on the NAS)
+$ ls          # what's in here?</code></pre>
+<p>Running <code>hostname</code> right after connecting is a great habit — it's a one-second sanity check that you're about to type commands on the NAS and not accidentally on your own laptop.</p>
+</section>
+
+<section>
+<h2>Leave cleanly</h2>
+<pre><code>$ exit</code></pre>
+<p>This closes the SSH session and drops you back to your own computer's terminal (your prompt name changes back). Pressing <kbd>Ctrl</kbd>+<kbd>D</kbd> does the same thing. That's it — you were a guest, you looked around, you left.</p>
+</section>
+
+<section>
+<h2>What we're deliberately <em>not</em> doing yet</h2>
+<p>To keep this safe, this lesson stays away from anything that changes the NAS: <code>sudo</code> (running as superuser), deleting or moving files (<code>rm</code>, <code>mv</code>), changing permissions, and installing software. Those are real skills worth learning — just later, on purpose, once looking around feels routine.</p>
+</section>
+
+<section>
+<h2>Try it</h2>
+<ol>
+<li>Open your computer's terminal and connect with <code>ssh your-account@your-nas-address</code>.</li>
+<li>Get past the password prompt (remember: invisible typing is normal).</li>
+<li>Run <code>hostname</code> and confirm it shows your NAS's name.</li>
+<li>Run <code>whoami</code>, <code>pwd</code>, then <code>ls</code>. Notice this is the same navigation from Lesson&nbsp;0001 — just on a different machine.</li>
+<li>Type <code>exit</code> and confirm your prompt returns to your own computer.</li>
+</ol>
+</section>
+
+<section>
+<h2>Check your recall</h2>
+<p>Answer from memory first, then reveal.</p>
+
+<details class="quiz">
+<summary>In <code>ssh admin@192.168.1.50</code>, what are the three parts?</summary>
+<p>The user account (<code>admin</code>), the separator <code>@</code>, and the machine's address (<code>192.168.1.50</code>).</p>
+</details>
+
+<details class="quiz">
+<summary>You start typing your password and nothing shows on screen. What do you do?</summary>
+<p>Keep typing and press Enter — hidden input is normal and intentional for passwords.</p>
+</details>
+
+<details class="quiz">
+<summary>Which command confirms you're actually on the NAS and not your own computer?</summary>
+<p><code>hostname</code> — it prints the name of the machine you're currently connected to.</p>
+</details>
+
+<details class="quiz">
+<summary>How do you end the SSH session and return to your own computer?</summary>
+<p>Type <code>exit</code> (or press Ctrl+D).</p>
+</details>
+</section>
+
+<section class="primary-source">
+<h2>Go deeper</h2>
+<p>Primary source for this lesson: <a href="https://kb.synology.com/en-us/DSM/help/DSM/AdminCenter/system_terminal?version=7" target="_blank" rel="noopener">Synology Knowledge Center — Terminal (DSM)</a>, the official page on how SSH is enabled and configured on your NAS.</p>
+<p>Quick reference for these commands: <a href="../reference/ssh-cheatsheet.html">SSH cheat sheet</a>. Navigation refresher: <a href="../reference/linux-navigation-cheatsheet.html">Navigation cheat sheet</a>.</p>
+</section>
+
+<footer class="lesson-footer">
+<p>Nervous about a step, or seeing something the lesson didn't mention? Ask me before running it — especially anything on the NAS. That's exactly what I'm here for.</p>
+</footer>
+</article>
+</body>
+</html>
