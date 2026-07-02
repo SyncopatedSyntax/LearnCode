@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interleaved Review — Lessons 1–5</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+<article>
+<header class="lesson-header">
+<p class="eyebrow"><a href="../index.html">Linux Command Line Confidence</a> · Review 01</p>
+<h1>Interleaved Review — Lessons 1–5</h1>
+<p class="tagline">Everything so far, deliberately shuffled. Harder than a per-lesson quiz — and that difficulty is the point.</p>
+</header>
+
+<section>
+<h2>How to use this</h2>
+<p>These questions jump between lessons on purpose. Mixing topics — <strong>interleaving</strong> — forces your brain to first work out <em>which</em> idea applies before recalling it, which is exactly the effort that builds long-term memory. It'll feel less smooth than reviewing one lesson at a time. That friction is the review working.</p>
+<div class="callout callout--safe">
+<strong>Rules:</strong> answer out loud (or in your head) <em>before</em> tapping to reveal. Tally what you get. There's no penalty for a miss — a miss just tells us exactly what to re-drill.
+</div>
+</section>
+
+<section>
+<h2>The questions</h2>
+
+<details class="quiz">
+<summary>1. You've lost a file but remember its name. You know a phrase inside another file but not which one. Which command for each?</summary>
+<p><code>find</code> searches by file <em>name</em>; <code>grep</code> searches for text <em>inside</em> files. <span class="source-note">(Lesson 0004)</span></p>
+</details>
+
+<details class="quiz">
+<summary>2. You're inside a <code>man</code> page and your prompt has vanished. How do you get out?</summary>
+<p>Press <kbd>q</kbd> — man pages open in <code>less</code>, so the same quit key works. <span class="source-note">(Lessons 0005 + 0003)</span></p>
+</details>
+
+<details class="quiz">
+<summary>3. What is <code>cat</code> short for, and what's its <em>real</em> job?</summary>
+<p><em>Concatenate</em> — joining files end-to-end. Printing a single file is just the simplest case. <span class="source-note">(Lesson 0003)</span></p>
+</details>
+
+<details class="quiz">
+<summary>4. Just by looking, how do you tell an absolute path from a relative one?</summary>
+<p>An absolute path starts with a leading slash <code>/</code>; a relative one doesn't. <span class="source-note">(Lesson 0001)</span></p>
+</details>
+
+<details class="quiz">
+<summary>5. You SSH in, start typing your password, and nothing appears on screen. What do you do?</summary>
+<p>Keep typing and press Enter — hidden password input is normal and intentional. <span class="source-note">(Lesson 0002)</span></p>
+</details>
+
+<details class="quiz">
+<summary>6. In a man page's SYNOPSIS, what do <code>[ ]</code> and <code>...</code> mean?</summary>
+<p>Square brackets = optional; three dots = the item can be repeated. <span class="source-note">(Lesson 0005)</span></p>
+</details>
+
+<details class="quiz">
+<summary>7. In <code>grep -rin "synology" .</code>, what do the three flags do?</summary>
+<p><strong>r</strong>ecursive (search subfolders), <strong>i</strong>gnore case, line <strong>n</strong>umbers. <span class="source-note">(Lesson 0004)</span></p>
+</details>
+
+<details class="quiz">
+<summary>8. What does <code>cd -</code> (dash) do?</summary>
+<p>Jumps back to the previous directory you were in — it toggles between the last two. <span class="source-note">(Lesson 0001)</span></p>
+</details>
+
+<details class="quiz">
+<summary>9. Which single command confirms you're on the NAS and not your own laptop?</summary>
+<p><code>hostname</code> — it prints the name of the machine you're currently on. <span class="source-note">(Lesson 0002)</span></p>
+</details>
+
+<details class="quiz">
+<summary>10. What does the name <code>grep</code> actually stand for?</summary>
+<p><strong>G</strong>lobal / <strong>r</strong>egular <strong>e</strong>xpression / <strong>p</strong>rint — from the <code>g/re/p</code> command in the old <code>ed</code> editor. <span class="source-note">(Lesson 0004)</span></p>
+</details>
+
+<details class="quiz">
+<summary>11. <code>man</code> isn't installed on your NAS. What's the reliable fallback for help?</summary>
+<p>Add <code>--help</code> to the command — it's built in and works almost everywhere. <span class="source-note">(Lesson 0005)</span></p>
+</details>
+
+<details class="quiz">
+<summary>12. What's the difference between <code>ls -a</code> and <code>ls -l</code>?</summary>
+<p><code>-a</code> = <em>all</em> (show hidden dotfiles); <code>-l</code> = <em>long</em> format (permissions, owner, size, date). <span class="source-note">(Lesson 0001)</span></p>
+</details>
+
+<details class="quiz">
+<summary>13. Your terminal fills with garbage after you view the wrong file. What happened, and what fixes it?</summary>
+<p>You <code>cat</code>'d a non-text (binary) file; type <code>reset</code> and press Enter to restore the terminal. <span class="source-note">(Lesson 0003)</span></p>
+</details>
+
+<details class="quiz">
+<summary>14. You want a command but only know what it should <em>do</em>. What do you run?</summary>
+<p><code>man -k keyword</code> (or <code>apropos keyword</code>) to search the manuals by description. <span class="source-note">(Lesson 0005)</span></p>
+</details>
+
+<details class="quiz">
+<summary>15. In <code>find . -name "*.log"</code>, what does the <code>.</code> mean — and why the quotes?</summary>
+<p><code>.</code> = start searching here (and all subfolders). Quotes hand the <code>*</code> pattern to <code>find</code> instead of letting the shell expand it first. <span class="source-note">(Lessons 0004 + 0001)</span></p>
+</details>
+
+</section>
+
+<section>
+<h2>Score yourself</h2>
+<ul>
+<li><strong>13–15:</strong> the read-only foundation is solid — ready for Lesson 0006 (commands that change things).</li>
+<li><strong>9–12:</strong> strong, with a few soft spots. Note which lessons they came from and re-skim those.</li>
+<li><strong>Under 9:</strong> completely normal at this stage — spacing is the fix. Re-read the weak lessons and try again in a day or two.</li>
+</ul>
+<div class="callout callout--safe">
+<strong>Close the loop:</strong> tell me your score and which numbers you missed. I'll write learning records for what you've nailed (upgrading the "covered — unverified" record into real evidence) and we'll re-drill the rest with spacing.
+</div>
+</section>
+
+<footer class="lesson-footer">
+<p>Come back to this page in a few days and run it cold — spaced repetition is where the real retention happens.</p>
+</footer>
+</article>
+</body>
+</html>

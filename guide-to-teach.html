@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting the Most from /teach</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+<button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+<article>
+<header class="lesson-header">
+<p class="eyebrow"><a href="index.html">Linux Command Line Confidence</a> · Meta</p>
+<h1>Getting the Most from <code>/teach</code></h1>
+<p class="tagline">The features of this teaching workspace, and how to push each one.</p>
+</header>
+
+<section>
+<h2>The mental model</h2>
+<p><code>/teach</code> isn't software with buttons — it's a <strong>convention</strong>. This whole directory <em>is</em> the tool. Your learning lives in files, and the agent is the engine that reads and writes them. "Maximizing" it means feeding those files well and asking the agent to exercise the parts you haven't used yet.</p>
+</section>
+
+<section>
+<h2>The seven moving parts</h2>
+<table class="ref-table">
+<thead><tr><th>File / folder</th><th>What it is · how to push it</th></tr></thead>
+<tbody>
+<tr><td><code>MISSION.md</code></td><td>The compass. Every lesson must trace back to it, which stops lessons drifting into abstract trivia. <em>Keep it concrete; tell the agent the moment your goal shifts.</em></td></tr>
+<tr><td><code>RESOURCES.md</code></td><td>Vetted sources + communities. The agent is told never to teach from memory alone. <em>Throw sources at it to vet; ask it to fill "Gaps."</em></td></tr>
+<tr><td><code>lessons/</code></td><td>The main output — short, single-win, pitched to your level. <em>Name what you want, or say "you pick" and it finds your zone of proximal development.</em></td></tr>
+<tr><td><code>reference/</code></td><td>The durable layer — cheat sheets and glossaries you revisit. <em>Ask for one on anything; once a glossary exists it's adhered to.</em></td></tr>
+<tr><td><code>learning-records/</code></td><td>The memory — ADR-style notes of what you actually learned. They drive what's taught next, across sessions.</td></tr>
+<tr><td><code>assets/</code></td><td>Reusable components (the shared stylesheet, the dark-mode toggle). <em>Ask for reusable widgets: quizzes, simulators, diagrams.</em></td></tr>
+<tr><td><code>NOTES.md</code></td><td>Your preferences (like "teach the name origins"). <em>State a preference and it's recorded and honored.</em></td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>The invisible engine: fighting forgetting</h2>
+<p>The skill explicitly distinguishes <strong>fluency</strong> (feels good now, fades) from <strong>storage strength</strong> (real retention), and chases the second through three techniques:</p>
+<ul>
+<li><strong>Retrieval practice</strong> — the recall quizzes. Answer <em>before</em> revealing; that effort is the point.</li>
+<li><strong>Spacing</strong> — reviewing after a gap, not just moving forward.</li>
+<li><strong>Interleaving</strong> — mixing topics in one session, like the <a href="reviews/0001-interleaved-lessons-1-5.html">interleaved review</a>.</li>
+</ul>
+</section>
+
+<section>
+<h2>What's easy to leave unused</h2>
+<ul>
+<li><strong>Learning records</strong> — the feature that makes future sessions calibrate to you instead of guessing.</li>
+<li><strong>Spacing &amp; interleaving</strong> — going only forward, lesson to lesson, skips where retention is actually built.</li>
+<li><strong>Wisdom / communities</strong> — <code>RESOURCES.md</code> lists them; the whole "Wisdom" pillar is about testing skills with real people, not just the agent.</li>
+<li><strong>The agent as a live tutor between lessons</strong> — paste a confusing man page, an error, or a command you didn't recognise. That tight feedback loop is a core feature.</li>
+</ul>
+</section>
+
+<section>
+<h2>Phrases that drive it</h2>
+<ul>
+<li>"I already know X" → logs a record, skips it</li>
+<li>"That was too easy / too hard" → recalibrates difficulty</li>
+<li>"Quiz me on the last 3 lessons" → interleaved retrieval</li>
+<li>"Make me a glossary / cheat sheet for X"</li>
+<li>"Find me a good community for X"</li>
+<li>"Change the mission to…"</li>
+<li>"Review what I've learned so far"</li>
+</ul>
+</section>
+
+<footer class="lesson-footer">
+<p>This workspace is also an Obsidian vault — open <code>OBSIDIAN.md</code> and the <code>KNOWLEDGE-MAP.md</code> hub in Obsidian for the linked view of everything.</p>
+</footer>
+</article>
+</body>
+</html>
