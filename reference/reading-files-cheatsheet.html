@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reading Files — Cheat Sheet</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+<article class="reference">
+<header class="lesson-header">
+<p class="eyebrow"><a href="../index.html">Linux Command Line Confidence</a> · Reference</p>
+<h1>Reading Files Cheat Sheet</h1>
+<p class="tagline">Companion to <a href="../lessons/0003-reading-files.html">Lesson 0003: Reading Files Without Changing Them</a></p>
+</header>
+
+<h2>Commands</h2>
+<table class="ref-table">
+<thead><tr><th>Command</th><th>Short for</th><th>Does</th></tr></thead>
+<tbody>
+<tr><td><code>cat file</code></td><td>concatenate</td><td>Print the whole file at once (best for short files)</td></tr>
+<tr><td><code>cat a b</code></td><td>concatenate</td><td>Print files <code>a</code> then <code>b</code> joined together</td></tr>
+<tr><td><code>less file</code></td><td>pun on <code>more</code></td><td>Scrollable view for long files; <kbd>q</kbd> to quit</td></tr>
+<tr><td><code>head file</code></td><td>head = top</td><td>First 10 lines</td></tr>
+<tr><td><code>head -n 5 file</code></td><td>head = top</td><td>First 5 lines</td></tr>
+<tr><td><code>tail file</code></td><td>tail = end</td><td>Last 10 lines</td></tr>
+<tr><td><code>tail -f file</code></td><td>f = follow</td><td>Watch a file live as new lines are added (<kbd>Ctrl</kbd>+<kbd>C</kbd> to stop)</td></tr>
+</tbody>
+</table>
+
+<h2>Inside <code>less</code></h2>
+<table class="ref-table">
+<thead><tr><th>Key</th><th>Does</th></tr></thead>
+<tbody>
+<tr><td><kbd>Space</kbd></td><td>Down one screen</td></tr>
+<tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Up / down one line</td></tr>
+<tr><td><kbd>/word</kbd> + <kbd>Enter</kbd></td><td>Search for "word"</td></tr>
+<tr><td><kbd>q</kbd></td><td>Quit back to the prompt</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout--caution">
+<strong>Garbled terminal?</strong> You probably <code>cat</code>'d a non-text file. Type <code>reset</code> and press Enter to restore it. When unsure if a file is text, use <code>less</code> instead of <code>cat</code>.
+</div>
+
+<div class="callout callout--safe">
+<strong>All read-only.</strong> Nothing here changes a file — safe to run anywhere, including the NAS.
+</div>
+
+<p class="source-note">Source: <a href="https://linuxcommand.org/tlcl.php" target="_blank" rel="noopener">The Linux Command Line</a> — William Shotts.</p>
+</article>
+</body>
+</html>

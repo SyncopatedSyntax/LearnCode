@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Command Name Origins | Glossary</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+<article class="reference">
+<header class="lesson-header">
+<p class="eyebrow"><a href="../index.html">Linux Command Line Confidence</a> · Glossary</p>
+<h1>Command Name Origins</h1>
+<p class="tagline">What each command is short for — because a name that <em>means</em> something is a name you remember.</p>
+</header>
+
+<section>
+<h2>Why they're all so short</h2>
+<p>Unix — where these commands were born in the early 1970s — grew up on <strong>teletypes</strong>: printers-with-keyboards that typed slowly onto paper, one character at a time. Every keystroke cost effort and every printed character cost time, so the culture prized <em>brevity</em>. Commands became short, lowercase, and abbreviated: <code>ls</code> not <code>list</code>, <code>cp</code> not <code>copy</code>. That terseness stuck, and it's why the terminal can feel cryptic at first. Once you know what the abbreviations stand for, the fog lifts.</p>
+</section>
+
+<section>
+<h2>Moving around <span class="source-note">(Lesson 0001)</span></h2>
+<table class="ref-table">
+<thead><tr><th>Command</th><th>Short for</th><th>The idea</th></tr></thead>
+<tbody>
+<tr><td><code>pwd</code></td><td><strong>p</strong>rint <strong>w</strong>orking <strong>d</strong>irectory</td><td>Prints the directory you're "working in" right now.</td></tr>
+<tr><td><code>ls</code></td><td><strong>l</strong>i<strong>s</strong>t</td><td>Lists what's inside a directory.</td></tr>
+<tr><td><code>cd</code></td><td><strong>c</strong>hange <strong>d</strong>irectory</td><td>Changes which directory you're in.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Connecting to another machine <span class="source-note">(Lesson 0002)</span></h2>
+<table class="ref-table">
+<thead><tr><th>Command</th><th>Short for</th><th>The idea</th></tr></thead>
+<tbody>
+<tr><td><code>ssh</code></td><td><strong>S</strong>ecure <strong>Sh</strong>ell</td><td>Opens a shell on another machine over an encrypted ("secure") connection.</td></tr>
+<tr><td><code>whoami</code></td><td>"who am i"</td><td>Literally the question — it prints the account you're logged in as.</td></tr>
+<tr><td><code>hostname</code></td><td>host name</td><td>The name of the machine ("host") you're on.</td></tr>
+<tr><td><code>exit</code></td><td>exit</td><td>Plain English — leave the shell or session.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Reading files <span class="source-note">(Lesson 0003)</span></h2>
+<table class="ref-table">
+<thead><tr><th>Command</th><th>Short for</th><th>The idea</th></tr></thead>
+<tbody>
+<tr><td><code>cat</code></td><td><strong>cat</strong>enate (concatenate)</td><td>Its real job is joining files end-to-end. Printing a single file is just the simplest case — nothing to do with the animal.</td></tr>
+<tr><td><code>less</code></td><td>a pun on <code>more</code></td><td>An older pager was called <code>more</code>. Someone wrote a better one and named it <code>less</code> — "less is more." It scrolls through long files without loading all of them.</td></tr>
+<tr><td><code>more</code></td><td>"more"</td><td>The original pager: shows one screenful, then prompts <code>--More--</code> for the next.</td></tr>
+<tr><td><code>head</code></td><td>head = top</td><td>Shows the <em>top</em> of a file (its first lines).</td></tr>
+<tr><td><code>tail</code></td><td>tail = end</td><td>Shows the <em>end</em> of a file (its last lines). <code>tail -f</code> "follows" a file live as it grows.</td></tr>
+</tbody>
+</table>
+</section>
+
+<footer class="lesson-footer">
+<p>This glossary grows with each lesson. When a new command appears, its origin lands here.</p>
+</footer>
+</article>
+</body>
+</html>
