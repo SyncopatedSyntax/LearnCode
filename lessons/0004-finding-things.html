@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finding Things | Lesson 0004</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+<article>
+<header class="lesson-header">
+<p class="eyebrow"><a href="../index.html">Linux Command Line Confidence</a> · Lesson 0004</p>
+<h1>Finding Things</h1>
+<p class="tagline">Two searches that end the guessing: <code>find</code> locates files by name, <code>grep</code> hunts for text <em>inside</em> them.</p>
+</header>
+
+<section>
+<h2>Where this fits</h2>
+<p>So far you can read a file when you already know its name and where it lives (<a href="0003-reading-files.html">Lesson&nbsp;0003</a>). But the terminal's real power shows up when you <em>don't</em> know — "where did that config file go?" or "which file mentions my NAS's IP?" These two commands answer exactly those questions.</p>
+<div class="callout callout--safe">
+<strong>Still read-only.</strong> <code>find</code> and <code>grep</code> only <em>search</em> — they locate and display, never change. Safe on your own computer and on the NAS.
+</div>
+</section>
+
+<section>
+<h2>The one distinction to hold onto</h2>
+<p>Everything else follows from this:</p>
+<ul>
+<li><strong><code>find</code></strong> searches for files <em>by their name</em> — the label on the folder.</li>
+<li><strong><code>grep</code></strong> searches for text <em>inside</em> files — the words on the pages.</li>
+</ul>
+<p>Lost the file? <code>find</code>. Know a phrase that's in it but not which file? <code>grep</code>.</p>
+</section>
+
+<section>
+<h2><code>find</code> — locate files by name</h2>
+<p>The shape is <code>find &lt;where&gt; -name "&lt;pattern&gt;"</code>:</p>
+<pre><code>$ find . -name "notes.txt"
+./Documents/notes.txt</code></pre>
+<p>Reading it:</p>
+<ul>
+<li><code>find</code> — the command</li>
+<li><code>.</code> — <em>where</em> to start looking (the <code>.</code> from <a href="0001-finding-your-way-around.html">Lesson&nbsp;0001</a> — "here"). <code>find</code> then searches this folder <em>and every folder inside it</em>, all the way down.</li>
+<li><code>-name "notes.txt"</code> — <em>what</em> name to match</li>
+</ul>
+<p>The real power is wildcards. <code>*</code> means "any characters," so you can search by pattern:</p>
+<pre><code>$ find . -name "*.log"      # every file ending in .log, anywhere below here
+$ find ~ -name "budget*"    # files starting with "budget", under your home dir</code></pre>
+<div class="callout callout--caution">
+<strong>Quote patterns with <code>*</code></strong> (<code>"*.log"</code>, not <code>*.log</code>). Without quotes the shell tries to expand the <code>*</code> itself before <code>find</code> ever sees it, which can give confusing results. Quotes hand the pattern to <code>find</code> untouched.
+</div>
+<p>You can also match by type — <code>-type d</code> for directories, <code>-type f</code> for regular files:</p>
+<pre><code>$ find . -type d -name "backup*"    # directories named backup-something</code></pre>
+<p><strong>Name origin:</strong> <code>find</code> is plain English — like <code>exit</code>, one of the pleasantly literal ones. It finds things.</p>
+</section>
+
+<section>
+<h2><code>grep</code> — search inside files</h2>
+<p>The shape is <code>grep "&lt;text&gt;" &lt;file&gt;</code>. It prints every line that contains the text:</p>
+<pre><code>$ grep "error" server.log
+[08:14] error: connection refused
+[09:02] error: timeout</code></pre>
+<p>Three flags carry most of the weight:</p>
+<table class="ref-table">
+<thead><tr><th>Flag</th><th>Short for</th><th>Effect</th></tr></thead>
+<tbody>
+<tr><td><code>-i</code></td><td>ignore case</td><td>Match "Error", "ERROR", "error" all the same</td></tr>
+<tr><td><code>-r</code></td><td>recursive</td><td>Search every file in a folder <em>and its subfolders</em></td></tr>
+<tr><td><code>-n</code></td><td>number</td><td>Show the line number of each match</td></tr>
+</tbody>
+</table>
+<p>Combined, they answer real questions. "Which file anywhere under here mentions my NAS, case aside, and on what line?"</p>
+<pre><code>$ grep -rin "synology" .
+./notes/setup.md:12:My Synology NAS lives at ...</code></pre>
+<p><strong>Name origin — the good one:</strong> <code>grep</code> comes from an old Unix text editor called <code>ed</code>. To search a file there, you typed <code>g/re/p</code> — <strong>g</strong> for <em>global</em> (every line), <strong>re</strong> for the <em>regular expression</em> (the search pattern), <strong>p</strong> for <em>print</em>. People used it so constantly that it became its own tool, keeping the name. So <code>grep</code> literally spells out "globally find this pattern and print it." Knowing that, the name stops being random noise.</p>
+</section>
+
+<section>
+<h2>Two practical notes</h2>
+<div class="callout callout--caution">
+<strong>Search from a folder, not from <code>/</code>.</strong> Starting a <code>find</code> or <code>grep -r</code> at the system root (<code>/</code>) crawls the entire machine — slow, and noisy with "permission denied" lines. Start from <code>.</code> (here) or <code>~</code> (your home) instead. On the NAS especially, keep searches pointed at a specific folder you care about.
+</div>
+<div class="callout callout--safe">
+<strong>We're only using these to look.</strong> <code>find</code> has options that can delete or run commands on what it matches (<code>-delete</code>, <code>-exec</code>) — real power, real risk. We're deliberately not touching those yet, same as the NAS rule: locate first, act later and on purpose.
+</div>
+</section>
+
+<section>
+<h2>Try it</h2>
+<p>On your own computer is fine:</p>
+<ol>
+<li><code>cd ~</code> to start at your home directory.</li>
+<li><code>find . -name "*.txt"</code> — see every text file below you. Notice it reaches into subfolders on its own.</li>
+<li>Pick a file you know has a certain word, then <code>grep "thatword" thefile</code>.</li>
+<li>Now try <code>grep -rin "thatword" .</code> and watch it search everything at once, showing files and line numbers.</li>
+</ol>
+</section>
+
+<section>
+<h2>Check your recall</h2>
+<p>Answer from memory first, then reveal.</p>
+
+<details class="quiz">
+<summary>You lost a file but remember its name. You know a phrase inside a file but not which one. Which command for each?</summary>
+<p><code>find</code> searches by file name; <code>grep</code> searches for text inside files.</p>
+</details>
+
+<details class="quiz">
+<summary>In <code>find . -name "*.log"</code>, what does the <code>.</code> mean?</summary>
+<p>Start searching here — the current directory — and all folders beneath it.</p>
+</details>
+
+<details class="quiz">
+<summary>What do <code>-i</code>, <code>-r</code>, and <code>-n</code> do for <code>grep</code>?</summary>
+<p>Ignore case, search recursively through subfolders, and show line numbers.</p>
+</details>
+
+<details class="quiz">
+<summary>What does the name <code>grep</code> actually stand for?</summary>
+<p>Global / regular expression / print — from the <code>g/re/p</code> command in the old <code>ed</code> editor.</p>
+</details>
+</section>
+
+<section class="primary-source">
+<h2>Go deeper</h2>
+<p>Primary source for this lesson: <a href="https://linuxcommand.org/tlcl.php" target="_blank" rel="noopener">The Linux Command Line</a> by William Shotts — its chapters on searching cover <code>find</code> and <code>grep</code> (and the regular-expression patterns <code>grep</code> can match) in depth.</p>
+<p>References: <a href="../reference/finding-things-cheatsheet.html">Finding things cheat sheet</a> &middot; <a href="../reference/command-origins.html">Command Name Origins glossary</a>.</p>
+</section>
+
+<footer class="lesson-footer">
+<p>Search behaving oddly, or a pattern not matching? Ask me — regular expressions have sharp edges, and that's exactly what I'm here for.</p>
+</footer>
+</article>
+</body>
+</html>

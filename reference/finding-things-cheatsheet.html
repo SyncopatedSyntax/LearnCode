@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finding Things — Cheat Sheet</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+<article class="reference">
+<header class="lesson-header">
+<p class="eyebrow"><a href="../index.html">Linux Command Line Confidence</a> · Reference</p>
+<h1>Finding Things Cheat Sheet</h1>
+<p class="tagline">Companion to <a href="../lessons/0004-finding-things.html">Lesson 0004: Finding Things</a></p>
+</header>
+
+<div class="callout callout--safe">
+<strong>The distinction:</strong> <code>find</code> = search by file <em>name</em>. <code>grep</code> = search for text <em>inside</em> files.
+</div>
+
+<h2><code>find</code> — locate files by name</h2>
+<table class="ref-table">
+<thead><tr><th>Command</th><th>Does</th></tr></thead>
+<tbody>
+<tr><td><code>find . -name "notes.txt"</code></td><td>Find that file, from here down through subfolders</td></tr>
+<tr><td><code>find . -name "*.log"</code></td><td>Every <code>.log</code> file below here (quote patterns with <code>*</code>)</td></tr>
+<tr><td><code>find ~ -name "budget*"</code></td><td>Files starting with "budget", under your home dir</td></tr>
+<tr><td><code>find . -type d</code></td><td>Only directories (<code>-type f</code> = only files)</td></tr>
+</tbody>
+</table>
+<p class="source-note"><code>find</code> searches subfolders automatically. Its first argument is <em>where</em> to start.</p>
+
+<h2><code>grep</code> — search inside files</h2>
+<table class="ref-table">
+<thead><tr><th>Command</th><th>Does</th></tr></thead>
+<tbody>
+<tr><td><code>grep "error" file.log</code></td><td>Print lines in the file containing "error"</td></tr>
+<tr><td><code>grep -i "error" file.log</code></td><td><strong>i</strong>gnore case (Error, ERROR, error)</td></tr>
+<tr><td><code>grep -n "error" file.log</code></td><td>Show the line <strong>n</strong>umber of each match</td></tr>
+<tr><td><code>grep -r "error" .</code></td><td><strong>r</strong>ecursive: every file below here</td></tr>
+<tr><td><code>grep -rin "error" .</code></td><td>All three at once</td></tr>
+</tbody>
+</table>
+
+<h2>Name origins</h2>
+<table class="ref-table">
+<thead><tr><th>Command</th><th>Short for</th></tr></thead>
+<tbody>
+<tr><td><code>find</code></td><td>plain English — it finds things</td></tr>
+<tr><td><code>grep</code></td><td><strong>g</strong>lobal / <strong>r</strong>egular <strong>e</strong>xpression / <strong>p</strong>rint (from <code>g/re/p</code> in the <code>ed</code> editor)</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout--caution">
+<strong>Two cautions:</strong> start searches from <code>.</code> or <code>~</code>, not <code>/</code> (crawling the whole system is slow and noisy). And we're only <em>locating</em> here — <code>find</code>'s <code>-delete</code> and <code>-exec</code> can change or remove files; save those for later, deliberately.
+</div>
+
+<p class="source-note">Source: <a href="https://linuxcommand.org/tlcl.php" target="_blank" rel="noopener">The Linux Command Line</a> — William Shotts.</p>
+</article>
+</body>
+</html>
