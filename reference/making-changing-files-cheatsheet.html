@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Making &amp; Changing Files — Cheat Sheet</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+<article class="reference">
+<header class="lesson-header">
+<p class="eyebrow"><a href="../index.html">Linux Command Line Confidence</a> · Reference</p>
+<h1>Making &amp; Changing Files Cheat Sheet</h1>
+<p class="tagline">Companion to <a href="../lessons/0006-making-changing-files.html">Lesson 0006: Making &amp; Changing Files</a></p>
+</header>
+
+<div class="callout callout--caution">
+<strong>These change things — no undo, no trash.</strong> Practice on your own machine in a throwaway folder. Not on the NAS or system folders while learning.
+</div>
+
+<h2>Create</h2>
+<table class="ref-table">
+<thead><tr><th>Command</th><th>Short for</th><th>Does</th></tr></thead>
+<tbody>
+<tr><td><code>mkdir dir</code></td><td>make directory</td><td>Make a new folder</td></tr>
+<tr><td><code>mkdir -p a/b/c</code></td><td>make dir · <code>-p</code> = parents</td><td>Make a nested path in one go</td></tr>
+<tr><td><code>touch file</code></td><td>"touch" (timestamp)</td><td>Create an empty file (if it doesn't exist)</td></tr>
+</tbody>
+</table>
+
+<h2>Copy &amp; rename</h2>
+<table class="ref-table">
+<thead><tr><th>Command</th><th>Short for</th><th>Does</th></tr></thead>
+<tbody>
+<tr><td><code>cp a b</code></td><td>copy</td><td>Copy file <code>a</code> to <code>b</code></td></tr>
+<tr><td><code>cp -r dir1 dir2</code></td><td>copy · <code>-r</code> = recursive</td><td>Copy a whole folder</td></tr>
+<tr><td><code>mv a dir/</code></td><td>move</td><td>Move <code>a</code> into a folder</td></tr>
+<tr><td><code>mv old new</code></td><td>move</td><td>Rename (move to a new name)</td></tr>
+<tr><td><code>cp -i</code> / <code>mv -i</code></td><td>· <code>-i</code> = interactive</td><td>Ask before overwriting</td></tr>
+</tbody>
+</table>
+
+<h2>Delete</h2>
+<table class="ref-table">
+<thead><tr><th>Command</th><th>Short for</th><th>Does</th></tr></thead>
+<tbody>
+<tr><td><code>rm file</code></td><td>remove</td><td>Delete a file — <strong>permanently</strong></td></tr>
+<tr><td><code>rm -i file</code></td><td>remove · <code>-i</code> = interactive</td><td>Ask before each delete (safer)</td></tr>
+<tr><td><code>rm -r dir</code></td><td>remove · <code>-r</code> = recursive</td><td>Delete a folder <em>and everything in it</em></td></tr>
+<tr><td><code>rm -f</code></td><td>remove · <code>-f</code> = force</td><td>No prompts or warnings</td></tr>
+<tr><td><code>rmdir dir</code></td><td>remove directory</td><td>Delete a folder <strong>only if empty</strong> (a safety net)</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout--caution">
+<strong><code>rm -rf</code></strong> force-deletes an entire tree with no confirmation. Never point it at a path you haven't read twice, never at <code>/</code>, and never with an unchecked wildcard.
+</div>
+
+<h2>Safety habits</h2>
+<ol>
+<li>Sandbox destructive commands in a throwaway folder on your own machine.</li>
+<li>Use <code>-i</code> on <code>cp</code>/<code>mv</code>/<code>rm</code> while learning.</li>
+<li><code>ls</code> a wildcard before you <code>rm</code> it: <code>ls *.tmp</code> then <code>rm *.tmp</code>.</li>
+<li>Read the path twice before any <code>rm -rf</code>. Not on the NAS or system folders.</li>
+</ol>
+
+<p class="source-note">Source: <a href="https://linuxcommand.org/tlcl.php" target="_blank" rel="noopener">The Linux Command Line</a> — William Shotts.</p>
+</article>
+</body>
+</html>

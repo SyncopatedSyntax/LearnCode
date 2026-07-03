@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Making &amp; Changing Files | Lesson 0006</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+<article>
+<header class="lesson-header">
+<p class="eyebrow"><a href="../index.html">Linux Command Line Confidence</a> · Lesson 0006</p>
+<h1>Making &amp; Changing Files</h1>
+<p class="tagline">Create, copy, rename, and delete — plus the two or three habits that keep "delete" from ever meaning "disaster."</p>
+</header>
+
+<section>
+<h2>A line worth naming</h2>
+<p>Every command in Lessons 0001–0005 only <em>looked</em>. From here on, commands <strong>change things</strong> — and the terminal has no Recycle Bin and no undo. That's not a reason to be nervous; it's a reason to build a few safety habits now that protect you for life.</p>
+<div class="callout callout--caution">
+<strong>Not read-only anymore.</strong> Practice everything here on <em>your own computer</em>, inside a throwaway folder you're happy to delete. <strong>Do not</strong> run these on the NAS or in system folders while you're learning — we'll bring skills to the NAS only once they're second nature.
+</div>
+</section>
+
+<section>
+<h2>The safe creators: <code>mkdir</code> and <code>touch</code></h2>
+<p>These only <em>make</em> things, so they're low-risk — a good place to start.</p>
+
+<h3><code>mkdir</code> — make a directory</h3>
+<pre><code>$ mkdir project
+$ mkdir -p reports/2026/q3    # make the whole nested path at once</code></pre>
+<p><strong>Name origin:</strong> <code>mkdir</code> = <em>make directory</em> — literally "mk" + "dir." The <code>-p</code> flag is for <em>parents</em>: it creates every parent folder in the path that doesn't exist yet.</p>
+
+<h3><code>touch</code> — create an empty file</h3>
+<pre><code>$ touch notes.txt</code></pre>
+<p>If <code>notes.txt</code> doesn't exist, this makes an empty one.</p>
+<p><strong>Name origin:</strong> <code>touch</code>'s original job is updating a file's "last modified" timestamp — <em>touching</em> it to mark it as changed just now. Creating an empty file is simply what happens when you "touch" a file that isn't there yet.</p>
+</section>
+
+<section>
+<h2>Copy and rename: <code>cp</code> and <code>mv</code></h2>
+<p>These can <em>overwrite</em>, so they earn a little more care.</p>
+
+<h3><code>cp</code> — copy</h3>
+<pre><code>$ cp report.txt report-backup.txt      # copy a file
+$ cp -r project project-copy           # copy a whole folder (-r)</code></pre>
+<p><strong>Name origin:</strong> <code>cp</code> = <em>copy</em>. Copying a folder needs <code>-r</code> — the same <em>recursive</em> flag you met in <code>grep</code> and <code>find</code> (<a href="0004-finding-things.html">Lesson&nbsp;0004</a>): "this and everything inside it."</p>
+
+<h3><code>mv</code> — move <em>and</em> rename</h3>
+<pre><code>$ mv report.txt archive/       # move a file into a folder
+$ mv draft.txt final.txt       # rename (move it to a new name)</code></pre>
+<p>That second line is the surprise: renaming <em>is</em> moving — you're moving the file to a new name in the same place.</p>
+<p><strong>Name origin:</strong> <code>mv</code> = <em>move</em>.</p>
+
+<div class="callout callout--caution">
+<strong>Both can silently overwrite.</strong> If the destination already exists, <code>cp</code> and <code>mv</code> replace it without asking — and that's gone with no undo. While learning, add <code>-i</code> (<em>interactive</em>): <code>cp -i</code> / <code>mv -i</code> ask for a yes before overwriting.
+</div>
+</section>
+
+<section>
+<h2>Delete: <code>rm</code> — the one to respect</h2>
+<pre><code>$ rm oldfile.txt</code></pre>
+<p><strong>Name origin:</strong> <code>rm</code> = <em>remove</em>.</p>
+<div class="callout callout--caution">
+<strong>There is no trash and no undo.</strong> <code>rm</code> doesn't move a file to a bin you can recover from — it deletes it. Gone means gone. This is the single most important thing to internalise in this lesson.
+</div>
+<p>Two flags multiply its power — and its danger:</p>
+<ul>
+<li><code>rm -r folder</code> — <em>recursive</em>: delete a folder <strong>and everything inside it</strong>.</li>
+<li><code>rm -f</code> — <em>force</em>: delete without any warnings or prompts.</li>
+</ul>
+<p>Combined as <code>rm -rf</code>, they force-delete an entire tree with zero confirmation. It's a normal tool that professionals use — but never point it at a path you haven't read twice, never at <code>/</code>, and never with a wildcard you haven't checked.</p>
+<p>Two gentler options:</p>
+<ul>
+<li><code>rm -i file</code> — <em>interactive</em>: asks before each delete. A great habit while learning.</li>
+<li><code>rmdir folder</code> — <em>remove directory</em>, but <strong>only if it's empty</strong>. It refuses otherwise, which makes it a built-in safety net for tidying up empty folders.</li>
+</ul>
+</section>
+
+<section>
+<h2>The habits that keep you safe</h2>
+<div class="callout callout--safe">
+<ol>
+<li><strong>Sandbox it.</strong> Practice destructive commands only in a throwaway folder on your own machine.</li>
+<li><strong>Use <code>-i</code> while learning.</strong> On <code>cp</code>, <code>mv</code>, and <code>rm</code>, it asks before it overwrites or deletes.</li>
+<li><strong><code>ls</code> a wildcard before you <code>rm</code> it.</strong> Run <code>ls *.tmp</code> first to see exactly what <code>rm *.tmp</code> would hit. (Your Lesson 0001 skill, used as a seatbelt.)</li>
+<li><strong>Read the path twice.</strong> Especially before any <code>rm -rf</code>. Never on the NAS or system folders while learning.</li>
+</ol>
+</div>
+</section>
+
+<section>
+<h2>Try it — in a sandbox</h2>
+<p>Everything happens inside <code>~/sandbox</code>, which you delete at the end, so nothing else can be touched:</p>
+<pre><code>$ mkdir ~/sandbox &amp;&amp; cd ~/sandbox    # a safe playground
+$ touch a.txt b.txt                  # create two empty files
+$ mkdir backup                       # a folder
+$ cp a.txt backup/                   # copy a.txt into it
+$ mv b.txt c.txt                     # rename b.txt to c.txt
+$ ls -R                              # look at what you built
+$ rm c.txt                           # delete one file
+$ cd ~ &amp;&amp; rm -r sandbox              # remove the whole playground</code></pre>
+<p>Notice the last line uses <code>rm -r</code> deliberately, on a folder you created for exactly this purpose. That's the safe way to meet a powerful command.</p>
+</section>
+
+<section>
+<h2>Check your recall</h2>
+<p>Answer from memory first, then reveal.</p>
+
+<details class="quiz">
+<summary>What makes <code>rm</code> more dangerous than deleting in a file manager?</summary>
+<p>There's no trash and no undo — <code>rm</code> deletes permanently, immediately.</p>
+</details>
+
+<details class="quiz">
+<summary>You're about to run <code>rm *.log</code>. What's the safe step first?</summary>
+<p>Run <code>ls *.log</code> first to see exactly which files that pattern matches.</p>
+</details>
+
+<details class="quiz">
+<summary>How do you rename a file — and why that command?</summary>
+<p><code>mv oldname newname</code> — renaming is just moving a file to a new name.</p>
+</details>
+
+<details class="quiz">
+<summary>What does adding <code>-i</code> to <code>cp</code>, <code>mv</code>, or <code>rm</code> do?</summary>
+<p>Makes it interactive — it asks for confirmation before overwriting or deleting.</p>
+</details>
+
+<details class="quiz">
+<summary>What do the <code>-r</code> and <code>-f</code> flags mean for <code>rm</code>?</summary>
+<p>Recursive (delete a folder and its contents) and force (no prompts or warnings).</p>
+</details>
+</section>
+
+<section class="primary-source">
+<h2>Go deeper</h2>
+<p>Primary source for this lesson: <a href="https://linuxcommand.org/tlcl.php" target="_blank" rel="noopener">The Linux Command Line</a> by William Shotts — its chapter on manipulating files and directories covers these thoroughly, including wildcards.</p>
+<p>References: <a href="../reference/making-changing-files-cheatsheet.html">Making &amp; changing files cheat sheet</a> &middot; <a href="../reference/command-origins.html">Command Name Origins glossary</a>.</p>
+</section>
+
+<footer class="lesson-footer">
+<p>About to run something that changes or deletes, and not 100% sure what it'll do? Paste it to me <em>before</em> you press Enter — I'll tell you exactly what it would do. That's the safest habit of all.</p>
+</footer>
+</article>
+</body>
+</html>

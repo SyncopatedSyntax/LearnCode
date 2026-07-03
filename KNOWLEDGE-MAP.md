@@ -18,10 +18,11 @@ Home note for the **Linux Command Line Confidence** workspace. If you're in [[OB
 3. [Reading Files](lessons/0003-reading-files.html) — `cat`, `less`, `head`, `tail`
 4. [Finding Things](lessons/0004-finding-things.html) — `find`, `grep`
 5. [Getting Help Yourself](lessons/0005-getting-help.html) — `man`, `--help`, `apropos`
+6. [Making & Changing Files](lessons/0006-making-changing-files.html) — `mkdir`, `touch`, `cp`, `mv`, `rm` (first commands that change things)
 
 ## Reference
 - [Command Name Origins](reference/command-origins.html) — the growing glossary
-- Cheat sheets: [Navigation](reference/linux-navigation-cheatsheet.html) · [SSH](reference/ssh-cheatsheet.html) · [Reading files](reference/reading-files-cheatsheet.html) · [Finding things](reference/finding-things-cheatsheet.html) · [Getting help](reference/getting-help-cheatsheet.html)
+- Cheat sheets: [Navigation](reference/linux-navigation-cheatsheet.html) · [SSH](reference/ssh-cheatsheet.html) · [Reading files](reference/reading-files-cheatsheet.html) · [Finding things](reference/finding-things-cheatsheet.html) · [Getting help](reference/getting-help-cheatsheet.html) · [Making & changing files](reference/making-changing-files-cheatsheet.html)
 
 ## Practice
 - [Interleaved Review — Lessons 1–5](reviews/0001-interleaved-lessons-1-5.html) — mixed retrieval practice
