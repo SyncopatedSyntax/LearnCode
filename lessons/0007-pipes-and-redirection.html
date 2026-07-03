@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pipes &amp; Redirection | Lesson 0007</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+<article>
+<header class="lesson-header">
+<p class="eyebrow"><a href="../index.html">Linux Command Line Confidence</a> · Lesson 0007</p>
+<h1>Pipes &amp; Redirection</h1>
+<p class="tagline">The moment small commands snap together into something powerful — <code>&gt;</code>, <code>&gt;&gt;</code>, and the mighty <code>|</code>.</p>
+</header>
+
+<section>
+<h2>The idea that makes the terminal powerful</h2>
+<p>Every command quietly has two ends: an <strong>input</strong> and an <strong>output</strong>. Until now, output has always landed on your screen. This lesson is about redirecting that flow — into a file, or into another command.</p>
+<p>That's the whole Unix philosophy in one move: instead of one giant program, you get lots of small, sharp tools — each doing one thing well — that you snap together. You already know several (<code>grep</code>, <code>sort</code>-to-come, <code>less</code>); now you'll connect them.</p>
+<div class="callout callout--safe">
+<strong>Mostly safe.</strong> Pipes just move data between commands — harmless. The one sharp edge is <code>&gt;</code>, which can overwrite a file; it's flagged clearly below.
+</div>
+</section>
+
+<section>
+<h2><code>&gt;</code> — send output into a file</h2>
+<p>Put <code>&gt;</code> after a command to write its output to a file instead of the screen:</p>
+<pre><code>$ ls &gt; files.txt      # the listing goes into files.txt, not the screen</code></pre>
+<p><strong>Mnemonic:</strong> <code>&gt;</code> is an arrow pointing at <em>where the output should go</em>.</p>
+<div class="callout callout--caution">
+<strong><code>&gt;</code> overwrites.</strong> If <code>files.txt</code> already exists, its contents are replaced — silently, no undo. Same clobber risk as <code>cp</code>/<code>mv</code> in <a href="0006-making-changing-files.html">Lesson&nbsp;0006</a>. Don't point <code>&gt;</code> at a file you want to keep.
+</div>
+</section>
+
+<section>
+<h2><code>&gt;&gt;</code> — add to the end of a file</h2>
+<p>Double the arrow to <em>append</em> instead of overwrite — it keeps what's already there and adds to the bottom:</p>
+<pre><code>$ echo "backup finished" &gt;&gt; log.txt</code></pre>
+<p><strong>Mnemonic:</strong> two arrows = "add on." It's the safe cousin of <code>&gt;</code>.</p>
+<p>That example uses a new little command: <code>echo</code> simply prints back whatever you give it.</p>
+<pre><code>$ echo "hello"
+hello</code></pre>
+<p><strong>Name origin:</strong> <code>echo</code> <em>echoes</em> your words back — like a shout in a canyon. Paired with <code>&gt;&gt;</code>, it's the quick way to add a line to a file.</p>
+</section>
+
+<section>
+<h2><code>|</code> — the pipe: feed one command into the next</h2>
+<p>This is the star of the lesson. A <strong>pipe</strong> (<code>|</code>) takes the output of the command on its left and hands it straight to the command on its right as <em>its</em> input:</p>
+<pre><code>$ ls | wc -l      # feed the file listing into a line-counter → number of items</code></pre>
+<p>Here <code>wc -l</code> is a new tool: <code>wc</code> is <em>word count</em>, and <code>-l</code> makes it count <em>lines</em>. Pipe your file listing into it and you've counted your files.</p>
+<p><strong>Name origin — the good one:</strong> it's literally called a "pipe" because data flows through it like water through plumbing, from one program into the next. That plumbing metaphor is exactly what its inventor had in mind — a chain of pipes is called a <em>pipeline</em>.</p>
+</section>
+
+<section>
+<h2>Snapping them together</h2>
+<p>The payoff is combining tools you already know. Read each of these left to right — output flows rightward through every <code>|</code>:</p>
+<table class="ref-table">
+<thead><tr><th>Pipeline</th><th>Answers</th></tr></thead>
+<tbody>
+<tr><td><code>grep "error" server.log | wc -l</code></td><td>How many lines contain "error"?</td></tr>
+<tr><td><code>grep "error" server.log | less</code></td><td>Let me page calmly through the matches (<a href="0004-finding-things.html">grep</a> + <a href="0003-reading-files.html">less</a>)</td></tr>
+<tr><td><code>ls | sort</code></td><td>List the folder, alphabetically sorted</td></tr>
+<tr><td><code>history | grep ssh</code></td><td>Which <code>ssh</code> commands did I run before?</td></tr>
+</tbody>
+</table>
+<p>Two more new helpers appear above: <code>sort</code> (arranges lines in order — literally "sort," with <code>-n</code> for numeric and <code>-r</code> for reverse) and <code>history</code> (lists the commands you've run). Notice you didn't need to learn much — you're recombining what you already had.</p>
+</section>
+
+<section>
+<h2>Try it — all harmless</h2>
+<pre><code>$ echo "first line" &gt; practice.txt      # create the file with one line
+$ echo "second line" &gt;&gt; practice.txt     # append a second
+$ cat practice.txt                       # see both lines
+$ ls | wc -l                             # count items in this folder
+$ grep "line" practice.txt | wc -l       # how many lines contain "line"?
+$ rm practice.txt                        # tidy up (your Lesson 0006 skill)</code></pre>
+<p>Watch the difference: run the first <code>echo</code> (with single <code>&gt;</code>) twice and the file still has one line — it keeps overwriting. Swap to <code>&gt;&gt;</code> and the lines pile up. That contrast is the whole lesson in two keystrokes.</p>
+</section>
+
+<section>
+<h2>Check your recall</h2>
+<p>Answer from memory first, then reveal.</p>
+
+<details class="quiz">
+<summary>What's the difference between <code>&gt;</code> and <code>&gt;&gt;</code>?</summary>
+<p><code>&gt;</code> overwrites the file; <code>&gt;&gt;</code> appends to the end, keeping what's there.</p>
+</details>
+
+<details class="quiz">
+<summary>In plain words, what does <code>|</code> do?</summary>
+<p>Feeds the output of the command on its left into the command on its right as input.</p>
+</details>
+
+<details class="quiz">
+<summary>What does <code>ls | wc -l</code> tell you?</summary>
+<p>How many items are in the current folder — it counts the lines of the listing.</p>
+</details>
+
+<details class="quiz">
+<summary>Why is <code>&gt;</code> a little dangerous?</summary>
+<p>It overwrites the target file silently, with no undo — use <code>&gt;&gt;</code> to add instead.</p>
+</details>
+
+<details class="quiz">
+<summary>What does <code>echo</code> do?</summary>
+<p>Prints back whatever text you give it — handy for adding a line to a file.</p>
+</details>
+</section>
+
+<section class="primary-source">
+<h2>Go deeper</h2>
+<p>Primary source for this lesson: <a href="https://linuxcommand.org/tlcl.php" target="_blank" rel="noopener">The Linux Command Line</a> by William Shotts — its chapters on redirection and pipelines go further, including combining three or more tools.</p>
+<p>References: <a href="../reference/pipes-redirection-cheatsheet.html">Pipes &amp; redirection cheat sheet</a> &middot; <a href="../reference/command-origins.html">Command Name Origins glossary</a>.</p>
+</section>
+
+<footer class="lesson-footer">
+<p>Built a pipeline that didn't do what you expected? Paste it to me — untangling which stage went wrong is a great way to learn, and exactly what I'm here for.</p>
+</footer>
+</article>
+</body>
+</html>

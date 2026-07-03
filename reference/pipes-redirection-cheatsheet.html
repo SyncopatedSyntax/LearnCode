@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pipes &amp; Redirection — Cheat Sheet</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+<article class="reference">
+<header class="lesson-header">
+<p class="eyebrow"><a href="../index.html">Linux Command Line Confidence</a> · Reference</p>
+<h1>Pipes &amp; Redirection Cheat Sheet</h1>
+<p class="tagline">Companion to <a href="../lessons/0007-pipes-and-redirection.html">Lesson 0007: Pipes &amp; Redirection</a></p>
+</header>
+
+<h2>The operators</h2>
+<table class="ref-table">
+<thead><tr><th>Symbol</th><th>Mnemonic</th><th>Does</th></tr></thead>
+<tbody>
+<tr><td><code>&gt;</code></td><td>arrow into a file</td><td>Send output to a file — <strong>overwrites</strong> it</td></tr>
+<tr><td><code>&gt;&gt;</code></td><td>double arrow = add on</td><td>Append output to the end of a file (safe)</td></tr>
+<tr><td><code>|</code></td><td>a pipe (plumbing)</td><td>Feed the left command's output into the right command</td></tr>
+</tbody>
+</table>
+
+<h2>Helper commands</h2>
+<table class="ref-table">
+<thead><tr><th>Command</th><th>Short for</th><th>Does</th></tr></thead>
+<tbody>
+<tr><td><code>echo "text"</code></td><td>"echo" (echoes back)</td><td>Print text — often paired with <code>&gt;&gt;</code></td></tr>
+<tr><td><code>wc -l</code></td><td>word count · <code>-l</code> = lines</td><td>Count lines (also <code>-w</code> words, <code>-c</code> characters)</td></tr>
+<tr><td><code>sort</code></td><td>sort</td><td>Order lines (<code>-n</code> numeric, <code>-r</code> reverse)</td></tr>
+<tr><td><code>history</code></td><td>history</td><td>List the commands you've run</td></tr>
+</tbody>
+</table>
+
+<h2>Pipelines to steal</h2>
+<table class="ref-table">
+<thead><tr><th>Pipeline</th><th>Answers</th></tr></thead>
+<tbody>
+<tr><td><code>ls | wc -l</code></td><td>How many items in this folder?</td></tr>
+<tr><td><code>grep "error" log | wc -l</code></td><td>How many matching lines?</td></tr>
+<tr><td><code>grep "error" log | less</code></td><td>Page through the matches</td></tr>
+<tr><td><code>ls | sort</code></td><td>Folder listing, sorted</td></tr>
+<tr><td><code>history | grep ssh</code></td><td>Past commands mentioning ssh</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout--caution">
+<strong><code>&gt;</code> overwrites silently</strong> — same clobber risk as <code>cp</code>/<code>mv</code>. Use <code>&gt;&gt;</code> when you mean to add, not replace.
+</div>
+
+<p class="source-note">Source: <a href="https://linuxcommand.org/tlcl.php" target="_blank" rel="noopener">The Linux Command Line</a> — William Shotts.</p>
+</article>
+</body>
+</html>
