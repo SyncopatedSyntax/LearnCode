@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Permissions — Cheat Sheet</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+<article class="reference">
+<header class="lesson-header">
+<p class="eyebrow"><a href="../index.html">Linux Command Line Confidence</a> · Reference</p>
+<h1>Permissions Cheat Sheet</h1>
+<p class="tagline">Companion to <a href="../lessons/0008-understanding-permissions.html">Lesson 0008: Understanding Permissions</a></p>
+</header>
+
+<h2>Reading the string</h2>
+<pre><code>-  rw-  r--  r--
+│   │    │    └─ others
+│   │    └─ group
+│   └─ owner (user)
+└─ type: - file · d directory · l symlink</code></pre>
+<table class="ref-table">
+<thead><tr><th>Letter</th><th>On a file</th><th>On a directory</th></tr></thead>
+<tbody>
+<tr><td><code>r</code> read</td><td>View it</td><td>List contents (<code>ls</code>)</td></tr>
+<tr><td><code>w</code> write</td><td>Change it</td><td>Create/delete files inside</td></tr>
+<tr><td><code>x</code> execute</td><td>Run it</td><td>Enter it (<code>cd</code>)</td></tr>
+</tbody>
+</table>
+
+<h2><code>chmod</code> symbolic form</h2>
+<table class="ref-table">
+<thead><tr><th>Piece</th><th>Options</th></tr></thead>
+<tbody>
+<tr><td>Who</td><td><code>u</code> user/owner · <code>g</code> group · <code>o</code> others · <code>a</code> all</td></tr>
+<tr><td>Direction</td><td><code>+</code> add · <code>-</code> remove</td></tr>
+<tr><td>What</td><td><code>r</code> · <code>w</code> · <code>x</code></td></tr>
+</tbody>
+</table>
+<p class="source-note">Examples: <code>chmod u+x script.sh</code> · <code>chmod go-w notes.txt</code></p>
+
+<h2>Numeric form (decoding tutorials)</h2>
+<p><code>r</code>=4 · <code>w</code>=2 · <code>x</code>=1, summed per group:</p>
+<table class="ref-table">
+<thead><tr><th>Number</th><th>Means</th></tr></thead>
+<tbody>
+<tr><td><code>7</code> = 4+2+1</td><td><code>rwx</code></td></tr>
+<tr><td><code>6</code> = 4+2</td><td><code>rw-</code></td></tr>
+<tr><td><code>5</code> = 4+1</td><td><code>r-x</code></td></tr>
+<tr><td><code>4</code></td><td><code>r--</code></td></tr>
+<tr><td><code>755</code></td><td><code>rwxr-xr-x</code> (owner all; others read+enter)</td></tr>
+<tr><td><code>644</code></td><td><code>rw-r--r--</code> (owner edits; others read)</td></tr>
+</tbody>
+</table>
+
+<h2>Name origins</h2>
+<table class="ref-table">
+<thead><tr><th>Term</th><th>Short for</th></tr></thead>
+<tbody>
+<tr><td><code>chmod</code></td><td>change mode ("mode" = the permission bits)</td></tr>
+<tr><td><code>chown</code></td><td>change owner</td></tr>
+<tr><td><code>sudo</code></td><td>superuser do</td></tr>
+<tr><td><code>root</code></td><td>the root <code>/</code> of the file-system tree; the account named after it</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout--caution">
+<strong>"Permission denied"</strong> = your account lacks r, w, or x on the target. Diagnose with <code>ls -l</code>, don't guess. <strong>On the NAS:</strong> reading permissions is safe; changing them (or reaching for <code>sudo</code>) can break DSM services — not until it's deliberate.
+</div>
+
+<p class="source-note">Source: <a href="https://linuxcommand.org/tlcl.php" target="_blank" rel="noopener">The Linux Command Line</a> — William Shotts.</p>
+</article>
+</body>
+</html>

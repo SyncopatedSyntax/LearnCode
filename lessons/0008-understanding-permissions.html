@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Understanding Permissions | Lesson 0008</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+<article>
+<header class="lesson-header">
+<p class="eyebrow"><a href="../index.html">Linux Command Line Confidence</a> · Lesson 0008</p>
+<h1>Understanding Permissions</h1>
+<p class="tagline">Decode <code>-rw-r--r--</code>, defuse "permission denied," and finally learn what <code>sudo</code> actually is.</p>
+</header>
+
+<section>
+<h2>Closing a loop from Lesson 0001</h2>
+<p>Back in <a href="0001-finding-your-way-around.html">Lesson&nbsp;0001</a>, <code>ls -l</code> showed you lines like this, and we set the cryptic first column aside:</p>
+<pre><code>-rw-r--r--  1 you  staff  220 Jun 10 18:02 notes.txt</code></pre>
+<p>Time to decode it. Permissions are also where the most common scary error comes from — <code>Permission denied</code> — and once you can read them, that error stops being spooky and starts being <em>information</em>.</p>
+<div class="callout callout--safe">
+<strong>Reading permissions is completely safe</strong> — it's just more <code>ls -l</code>. Changing them is the part with teeth; we'll practice that only in a sandbox on your own machine, and not on the NAS at all.
+</div>
+</section>
+
+<section>
+<h2>Reading the string</h2>
+<p>Ignore the first character (you know it: <code>-</code> file, <code>d</code> directory). The remaining nine characters are <strong>three groups of three</strong>:</p>
+<pre><code> rw-        r--        r--
+owner      group      others</code></pre>
+<ul>
+<li><strong>Owner</strong> — the user who owns the file (usually its creator)</li>
+<li><strong>Group</strong> — a named set of users the file belongs to</li>
+<li><strong>Others</strong> — everyone else on the machine</li>
+</ul>
+<p>Each group of three answers, in order: can they <strong>r</strong>ead it? <strong>w</strong>rite (change) it? e<strong>x</strong>ecute (run) it? A letter means yes; a <code>-</code> means no.</p>
+<p>So <code>-rw-r--r--</code> reads: a regular file; the owner can read and write; the group can only read; everyone else can only read. That's it — you can now decode any permission string you'll ever see.</p>
+<table class="ref-table">
+<thead><tr><th>Letter</th><th>On a file</th><th>On a directory</th></tr></thead>
+<tbody>
+<tr><td><code>r</code> — read</td><td>Open and view it</td><td>List what's inside (<code>ls</code>)</td></tr>
+<tr><td><code>w</code> — write</td><td>Change or overwrite it</td><td>Create/delete files inside it</td></tr>
+<tr><td><code>x</code> — execute</td><td>Run it as a program</td><td>Enter it (<code>cd</code> into it)</td></tr>
+</tbody>
+</table>
+<p>The directory column explains a classic head-scratcher: if a folder is missing <code>x</code> for you, you can't even <code>cd</code> into it.</p>
+</section>
+
+<section>
+<h2>So <em>that's</em> what "permission denied" means</h2>
+<p>When you see it, the system is saying exactly one thing: <em>the account you're logged in as doesn't have the needed letter (r, w, or x) on that file or folder.</em> Nothing is broken. Your move is to look:</p>
+<pre><code>$ ls -l blocked-file.txt
+-rw-------  1 root  root  512 Jun 12 10:00 blocked-file.txt</code></pre>
+<p>Owner is <code>root</code>, and only the owner has any access — so your account, being "others," gets nothing. Mystery solved by reading, not guessing. (On the NAS you'll see this often: many system files belong to <code>root</code>, and being denied is the system working as designed.)</p>
+<p><strong>Who is <code>root</code>?</strong> The superuser — the one account with unlimited power over the machine. <strong>Name origin:</strong> everything in Linux hangs off the top directory <code>/</code>, called the <em>root</em> of the file-system tree; the all-powerful account that owns that tree took the same name.</p>
+</section>
+
+<section>
+<h2><code>sudo</code> — explained, not yet used</h2>
+<p>You'll constantly see commands online prefixed with <code>sudo</code>. Now you can decode it:</p>
+<p><strong>Name origin:</strong> <code>sudo</code> = <em>superuser do</em> — "do this one command <em>as</em> the superuser." It temporarily borrows root's unlimited power for a single command, asking for your password to confirm.</p>
+<div class="callout callout--caution">
+<strong>Understanding <code>sudo</code> is safe. Running it removes every guardrail.</strong> With <code>sudo</code>, "permission denied" stops protecting you — including from typos. Per your standing rule: we don't use <code>sudo</code> on the NAS in this course until it's a deliberate, eyes-open choice. When a tutorial says <code>sudo something</code>, that's your cue to slow down and understand the command first — or paste it to me.
+</div>
+</section>
+
+<section>
+<h2>Changing permissions: <code>chmod</code></h2>
+<p>The tool for changing permissions is <code>chmod</code>. The friendly form is symbolic — <em>who</em> ± <em>what</em>:</p>
+<pre><code>$ chmod u+x script.sh     # give the user (owner) execute
+$ chmod go-w notes.txt    # remove write from group and others</code></pre>
+<ul>
+<li>Who: <code>u</code> = user (owner), <code>g</code> = group, <code>o</code> = others, <code>a</code> = all</li>
+<li>Direction: <code>+</code> add, <code>-</code> remove</li>
+<li>What: <code>r</code>, <code>w</code>, <code>x</code></li>
+</ul>
+<p><strong>Name origin:</strong> <code>chmod</code> = <em>change mode</em> — "mode" is the traditional Unix name for a file's permission bits. Its sibling <code>chown</code> = <em>change owner</em> reassigns the owner itself (that one usually needs root, and we're leaving it alone for now).</p>
+<p>One more decoding skill: tutorials love numeric forms like <code>chmod 755</code>. The numbers are just the same rwx bits added up per group — <code>r</code>=4, <code>w</code>=2, <code>x</code>=1. So <code>7</code> = 4+2+1 = <code>rwx</code>, <code>5</code> = 4+1 = <code>r-x</code>, and <code>755</code> = <code>rwxr-xr-x</code> (owner everything; group and others read+enter). You don't need to write these yet — but now they're not gibberish.</p>
+</section>
+
+<section>
+<h2>Try it — in a sandbox</h2>
+<p>Same pattern as <a href="0006-making-changing-files.html">Lesson&nbsp;0006</a>: everything inside a throwaway folder on your own machine.</p>
+<pre><code>$ mkdir ~/sandbox &amp;&amp; cd ~/sandbox
+$ touch test.txt
+$ ls -l                       # read its permission string
+$ chmod u+x test.txt
+$ ls -l                       # spot the new x in the owner triplet
+$ chmod go-r test.txt
+$ ls -l                       # group and others just lost read
+$ cd ~ &amp;&amp; rm -r sandbox       # tidy up</code></pre>
+<p>Watching the string change as you flip bits is the fastest way to make the notation stick.</p>
+</section>
+
+<section>
+<h2>Check your recall</h2>
+<p>Answer from memory first, then reveal.</p>
+
+<details class="quiz">
+<summary>In <code>-rw-r--r--</code>, who can do what?</summary>
+<p>Owner reads and writes; group only reads; everyone else only reads.</p>
+</details>
+
+<details class="quiz">
+<summary>What are the three "who" groups a permission string describes?</summary>
+<p>The owner, the group, and others — three letters (rwx) for each.</p>
+</details>
+
+<details class="quiz">
+<summary>What does "permission denied" actually mean?</summary>
+<p>Your account lacks the needed r, w, or x on that file or folder.</p>
+</details>
+
+<details class="quiz">
+<summary>What is <code>sudo</code> short for, and what does it do?</summary>
+<p>Superuser do — runs one command with root's unlimited power.</p>
+</details>
+
+<details class="quiz">
+<summary>On a directory, what does the <code>x</code> permission allow?</summary>
+<p>Entering it — without x you can't even cd into the folder.</p>
+</details>
+</section>
+
+<section class="primary-source">
+<h2>Go deeper</h2>
+<p>Primary source for this lesson: <a href="https://linuxcommand.org/tlcl.php" target="_blank" rel="noopener">The Linux Command Line</a> by William Shotts — its permissions chapter covers all of this plus <code>umask</code> and identity commands.</p>
+<p>References: <a href="../reference/permissions-cheatsheet.html">Permissions cheat sheet</a> &middot; <a href="../reference/command-origins.html">Command Name Origins glossary</a>.</p>
+</section>
+
+<footer class="lesson-footer">
+<p>Hit a "permission denied" in the wild — especially on the NAS? Paste me the command and the <code>ls -l</code> of the target, and we'll read it together before touching anything.</p>
+</footer>
+</article>
+</body>
+</html>
