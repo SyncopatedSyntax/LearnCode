@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reading a Docker Compose File | Lesson 0009</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+<article>
+<header class="lesson-header">
+<p class="eyebrow"><a href="../index.html">Linux Command Line Confidence</a> · Lesson 0009</p>
+<h1>Reading a Docker Compose File</h1>
+<p class="tagline">You've pasted these into your NAS and they worked. Now let's make every line mean something.</p>
+</header>
+
+<section>
+<h2>The goal: stop pasting, start reading</h2>
+<p>You can already get a container running by copying someone's <code>docker-compose.yml</code>. That's a real skill — but it means when something breaks, or you want to change a port, you're guessing. This lesson has one job: by the end, you can point at any line in a compose file and say what it does.</p>
+<div class="callout callout--safe">
+<strong>Nothing here touches your NAS.</strong> Reading and writing a compose file is just editing a text file — completely safe. <em>Deploying</em> one changes things, and we'll treat that carefully at the end.
+</div>
+</section>
+
+<section>
+<h2>YAML in sixty seconds</h2>
+<p>A compose file is written in <strong>YAML</strong>, a format for describing structured data in a way humans can read.</p>
+<p><strong>Name origin:</strong> YAML launched in 2001 as "<em>Yet Another Markup Language</em>" — a joke, since markup languages were everywhere at the time. By 2002 its creators renamed it to the recursive "<em>YAML Ain't Markup Language</em>," to make the point that it's for <em>data</em>, not documents.<sup><a href="#src1">1</a></sup> Both readings are still in circulation.</p>
+<p>Three rules cause virtually every YAML error you'll ever hit:</p>
+<table class="ref-table">
+<thead><tr><th>Rule</th><th>Why it bites</th></tr></thead>
+<tbody>
+<tr><td><strong>Indentation means nesting</strong></td><td>How far a line is indented is what makes it "belong to" the line above. It isn't decoration — it's the structure.</td></tr>
+<tr><td><strong>Spaces only, never tabs</strong></td><td>A Tab character is invalid for indentation in YAML. This is the classic invisible error: it looks fine, it won't load.</td></tr>
+<tr><td><strong><code>key: value</code> needs the space</strong></td><td><code>key:value</code> is wrong; <code>key: value</code> is right. The space after the colon is required.</td></tr>
+</tbody>
+</table>
+<p>And one piece of notation: a leading <code>-</code> marks a <strong>list item</strong>. So this…</p>
+<pre><code>ports:
+  - "8080:80"
+  - "8443:443"</code></pre>
+<p>…means "<code>ports</code> is a list, and here are two entries." Wherever you see a stack of dashes, you're reading a list.</p>
+</section>
+
+<section>
+<h2>The skeleton</h2>
+<p>Nearly every compose file is the same three-level shape:</p>
+<pre><code>services:          &lt;- level 1: "here come the containers"
+  jellyfin:        &lt;- level 2: a name YOU choose for this container
+    image: ...     &lt;- level 3: the settings for that container
+    ports: ...
+  another-app:     &lt;- a second container, same indent as the first
+    image: ...</code></pre>
+<p>That's it. <code>services:</code> holds one block per container; each block's name is yours to pick; everything indented under it configures that one container. Once you see this shape, even a 200-line file is just more of the same.</p>
+</section>
+
+<section>
+<h2>The five keys you'll always meet</h2>
+<table class="ref-table">
+<thead><tr><th>Key</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><code>image</code></td><td>Which prebuilt container to download and run — the app itself.</td></tr>
+<tr><td><code>ports</code></td><td>Which door on your NAS opens into the container.</td></tr>
+<tr><td><code>volumes</code></td><td>Which folder on your NAS the container can store files in.</td></tr>
+<tr><td><code>environment</code></td><td>Settings passed into the app (timezone, user IDs, passwords).</td></tr>
+<tr><td><code>restart</code></td><td>What should happen after a crash or a NAS reboot.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>The one rule that prevents most mistakes</h2>
+<div class="callout callout--safe">
+<strong>For both <code>ports</code> and <code>volumes</code>: the left side is <em>your NAS</em>, the right side is <em>inside the container</em>.</strong> Outside : inside. Host : container.
+</div>
+<p>So <code>"8096:8096"</code> means "port 8096 on my NAS leads to port 8096 inside the container." And <code>/volume1/docker/jellyfin/config:/config</code> means "the folder <code>/volume1/docker/jellyfin/config</code> on my NAS appears as <code>/config</code> to the app."</p>
+<p>The right-hand side is fixed by whoever built the image — the app expects its config at <code>/config</code>, so you leave that alone. <strong>The left-hand side is yours to change.</strong> That single insight is what lets you safely adapt a tutorial's file to your own NAS: change the left, leave the right.</p>
+<p>It's also why port clashes happen. If two containers both want <code>8096</code> on the left, the second one fails — two things can't answer the same door. Change the left side to something free (say <code>8097:8096</code>) and it works. Note that DSM itself already occupies some ports, 5000 and 5001 among them, so avoid those on the left.</p>
+</section>
+
+<section>
+<h2>Decoding a real one</h2>
+<p>Here's a file of the shape you've been pasting. Read it top to bottom — you now know every rule it uses:</p>
+<pre><code>services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    ports:
+      - "8096:8096"
+    volumes:
+      - /volume1/docker/jellyfin/config:/config
+      - /volume1/media:/media:ro
+    environment:
+      - TZ=Europe/London
+      - PUID=1026
+      - PGID=100
+    restart: unless-stopped</code></pre>
+<p>Line by line:</p>
+<ul>
+<li><code>jellyfin:</code> — the name you chose for this container.</li>
+<li><code>image: jellyfin/jellyfin:latest</code> — download the <code>jellyfin</code> image. The part after the colon is the <strong>tag</strong> (the version); <code>latest</code> means newest.</li>
+<li><code>container_name:</code> — a fixed, friendly name so it isn't auto-generated.</li>
+<li><code>ports: - "8096:8096"</code> — a list with one entry: NAS port 8096 → container port 8096.</li>
+<li><code>volumes:</code> — two entries. Config lives in a real folder on your NAS (so it survives a container rebuild), and your media folder is mounted at <code>/media</code>. Note the <code>:ro</code> on the end of that second one — <strong>read-only</strong>, so the container can view your media but never modify it. A genuinely good habit.</li>
+<li><code>environment:</code> — settings handed to the app. <code>TZ</code> is the timezone. <code>PUID</code>/<code>PGID</code> are a Synology-flavoured convention: the user and group ID the app should act as, so the files it creates have permissions you can actually use. (That's <a href="0008-understanding-permissions.html">Lesson&nbsp;0008</a> showing up in the wild.)</li>
+<li><code>restart: unless-stopped</code> — see below.</li>
+</ul>
+<p>The <code>restart</code> options are worth knowing properly, because this is what determines whether your apps come back after a NAS reboot:<sup><a href="#src2">2</a></sup></p>
+<table class="ref-table">
+<thead><tr><th>Value</th><th>Behaviour</th></tr></thead>
+<tbody>
+<tr><td><code>no</code></td><td>Never restart automatically (the default).</td></tr>
+<tr><td><code>on-failure</code></td><td>Restart only if it crashed with an error.</td></tr>
+<tr><td><code>always</code></td><td>Always restart — even if you deliberately stopped it and Docker later restarts.</td></tr>
+<tr><td><code>unless-stopped</code></td><td>Restart automatically, <em>except</em> if you stopped it on purpose. Usually what you want on a NAS.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>If your copied files start with <code>version:</code>, delete that line</h2>
+<div class="callout callout--caution">
+<p>Older tutorials — and there are thousands — begin with something like:</p>
+<pre><code>version: "3.8"
+services:
+  ...</code></pre>
+<p>That top-level <code>version</code> key is <strong>obsolete</strong>. Modern Docker Compose ignores it entirely and always validates against the newest schema; using it just produces a warning.<sup><a href="#src3">3</a></sup> Delete the line and the warning goes away — nothing else changes.</p>
+<p>It's also a useful <em>dating device</em>: if a tutorial still shows <code>version:</code>, it hasn't been updated in years, so treat the rest of its advice with a little more suspicion too.</p>
+</div>
+<p>Related naming note: the tool was once a separate program called <code>docker-compose</code> (with a hyphen). It's now built into Docker as a subcommand, <code>docker compose</code> (with a space). Both the filename <code>docker-compose.yml</code> and the newer <code>compose.yaml</code> are recognised — on Synology's Container Manager you'll usually see the former.</p>
+</section>
+
+<section>
+<h2>On your NAS specifically</h2>
+<ul>
+<li>In DSM 7.2+, the Docker package is called <strong>Container Manager</strong>, and its <strong>Project</strong> feature is where compose files live — you paste your YAML there rather than needing SSH.</li>
+<li>Paths on the left of a <code>volumes:</code> line should be full NAS paths starting with the volume number, like <code>/volume1/docker/appname/config</code>.</li>
+<li>Keeping each app's data under <code>/volume1/docker/&lt;appname&gt;/</code> is the widely used convention, and it makes backups obvious.</li>
+</ul>
+<div class="callout callout--caution">
+<strong>When you do deploy:</strong> create a <em>new</em> Project rather than editing one that's currently working. If a new file has a mistake, the worst case is that one new container fails to start — your existing setup is untouched. That's the compose equivalent of the sandbox habit from <a href="0006-making-changing-files.html">Lesson&nbsp;0006</a>.
+</div>
+</section>
+
+<section>
+<h2>Try it — zero risk</h2>
+<p>The best practice material is the files you already have:</p>
+<ol>
+<li>Open Container Manager on your NAS and look at an existing Project's compose file (or find a <code>docker-compose.yml</code> you saved).</li>
+<li>Name every top-level key you see. Anything that isn't <code>image</code>, <code>ports</code>, <code>volumes</code>, <code>environment</code>, or <code>restart</code> — note it down to ask about.</li>
+<li>For each <code>ports</code> line, say out loud which number is your NAS and which is the container.</li>
+<li>Check whether it starts with <code>version:</code> — now you know that line does nothing.</li>
+<li>Find one thing you could safely change (a left-hand port, a timezone) without breaking anything.</li>
+</ol>
+</section>
+
+<section>
+<h2>Check your recall</h2>
+<p>Answer from memory first, then reveal.</p>
+
+<details class="quiz">
+<summary>In <code>"8096:8096"</code>, which side is your NAS and which is the container?</summary>
+<p>Left is your NAS (the host), right is inside the container. Outside then inside.</p>
+</details>
+
+<details class="quiz">
+<summary>Why must you never use Tab characters to indent YAML?</summary>
+<p>Tabs are invalid for YAML indentation — only spaces work, and the error is invisible.</p>
+</details>
+
+<details class="quiz">
+<summary>What does a leading <code>-</code> mean in a YAML file?</summary>
+<p>It marks a list item, so several dashes together form a list.</p>
+</details>
+
+<details class="quiz">
+<summary>A tutorial's file starts with <code>version: "3.8"</code>. What should you do?</summary>
+<p>Delete it — the key is obsolete and ignored, and it dates the tutorial.</p>
+</details>
+
+<details class="quiz">
+<summary>What does <code>restart: unless-stopped</code> mean?</summary>
+<p>Restart automatically after crashes and reboots, unless you stopped it deliberately.</p>
+</details>
+
+<details class="quiz">
+<summary>What does adding <code>:ro</code> to the end of a volume line do?</summary>
+<p>Mounts that folder read-only, so the container can read but never modify it.</p>
+</details>
+</section>
+
+<section class="primary-source">
+<h2>Go deeper</h2>
+<p>Primary source: the <a href="https://docs.docker.com/reference/compose-file/services/" target="_blank" rel="noopener">Docker Compose services reference</a> — the authoritative list of every key you can put under a service. Bookmark it; it settles arguments that blog posts start.</p>
+<p>Citations:</p>
+<ol class="source-note">
+<li id="src1"><a href="https://yaml.org/about/" target="_blank" rel="noopener">yaml.org — About</a> (the name and its recursive acronym)</li>
+<li id="src2"><a href="https://docs.docker.com/engine/containers/start-containers-automatically/" target="_blank" rel="noopener">Docker — Start containers automatically</a> (restart policies)</li>
+<li id="src3"><a href="https://docs.docker.com/reference/compose-file/version-and-name/" target="_blank" rel="noopener">Docker — Version and name top-level elements</a> ("only informative… you'll receive a warning message that it is obsolete")</li>
+</ol>
+<p>References: <a href="../reference/yaml-compose-cheatsheet.html">YAML &amp; Compose cheat sheet</a> &middot; <a href="../reference/command-origins.html">Command Name Origins glossary</a>.</p>
+</section>
+
+<footer class="lesson-footer">
+<p>Got a compose file you don't fully understand — or one that won't start? Paste it to me and we'll read it together, line by line. That's much better practice than me inventing examples.</p>
+</footer>
+</article>
+</body>
+</html>

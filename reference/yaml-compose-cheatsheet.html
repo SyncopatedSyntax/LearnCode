@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YAML &amp; Compose — Cheat Sheet</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+<article class="reference">
+<header class="lesson-header">
+<p class="eyebrow"><a href="../index.html">Linux Command Line Confidence</a> · Reference</p>
+<h1>YAML &amp; Compose Cheat Sheet</h1>
+<p class="tagline">Companion to <a href="../lessons/0009-reading-compose-files.html">Lesson 0009: Reading a Docker Compose File</a></p>
+</header>
+
+<div class="callout callout--safe">
+<strong>The direction rule:</strong> in both <code>ports</code> and <code>volumes</code>, it's always <code>HOST:CONTAINER</code> — <strong>your NAS on the left, inside the container on the right.</strong> Change the left, leave the right.
+</div>
+
+<h2>YAML rules that actually bite</h2>
+<table class="ref-table">
+<thead><tr><th>Rule</th><th>Detail</th></tr></thead>
+<tbody>
+<tr><td>Indentation = nesting</td><td>How far it's indented is what it belongs to. Structure, not decoration.</td></tr>
+<tr><td>Spaces, never tabs</td><td>Tab characters are invalid for indentation — an invisible error.</td></tr>
+<tr><td>Space after the colon</td><td><code>key: value</code> ✓ &nbsp; <code>key:value</code> ✗</td></tr>
+<tr><td><code>-</code> makes a list</td><td>A stack of dashes at the same indent is a list.</td></tr>
+<tr><td><code>#</code> is a comment</td><td>Everything after it on the line is ignored.</td></tr>
+</tbody>
+</table>
+
+<h2>The skeleton</h2>
+<pre><code>services:
+  my-app:              # a name you choose
+    image: ...
+    ports: ...
+  another-app:         # second container
+    image: ...</code></pre>
+
+<h2>The keys you'll meet</h2>
+<table class="ref-table">
+<thead><tr><th>Key</th><th>Does</th></tr></thead>
+<tbody>
+<tr><td><code>image</code></td><td>Which prebuilt container to run. After the colon is the <em>tag</em> (version), e.g. <code>:latest</code></td></tr>
+<tr><td><code>ports</code></td><td><code>"NAS:CONTAINER"</code> — which door on your NAS opens into the app</td></tr>
+<tr><td><code>volumes</code></td><td><code>/nas/path:/container/path</code> — real storage for the app. Add <code>:ro</code> for read-only</td></tr>
+<tr><td><code>environment</code></td><td>Settings for the app: <code>TZ</code>, <code>PUID</code>/<code>PGID</code>, passwords</td></tr>
+<tr><td><code>restart</code></td><td>What happens after a crash or reboot (see below)</td></tr>
+<tr><td><code>container_name</code></td><td>A fixed friendly name instead of an auto-generated one</td></tr>
+<tr><td><code>depends_on</code></td><td>Start this one after another named service</td></tr>
+</tbody>
+</table>
+
+<h2><code>restart</code> values</h2>
+<table class="ref-table">
+<thead><tr><th>Value</th><th>Behaviour</th></tr></thead>
+<tbody>
+<tr><td><code>no</code></td><td>Never auto-restart (default)</td></tr>
+<tr><td><code>on-failure</code></td><td>Only after an error exit</td></tr>
+<tr><td><code>always</code></td><td>Always, even after you stopped it</td></tr>
+<tr><td><code>unless-stopped</code></td><td>Always, <em>unless</em> you stopped it deliberately — usual pick for a NAS</td></tr>
+</tbody>
+</table>
+
+<h2>Synology notes</h2>
+<ul>
+<li>DSM 7.2+: the Docker package is <strong>Container Manager</strong>; compose files go in a <strong>Project</strong>.</li>
+<li>Host paths need the volume number: <code>/volume1/docker/&lt;appname&gt;/config</code>.</li>
+<li>DSM itself uses some ports (5000/5001 among them) — don't claim those on the left.</li>
+<li><code>PUID</code>/<code>PGID</code> set which user/group the app acts as, so created files have workable permissions.</li>
+<li>Deploy as a <strong>new</strong> Project rather than editing a working one.</li>
+</ul>
+
+<div class="callout callout--caution">
+<strong>Delete <code>version:</code>.</strong> The top-level version key is obsolete — ignored by modern Compose and warned about. If a tutorial still has it, the tutorial is old.
+</div>
+
+<h2>Naming</h2>
+<table class="ref-table">
+<thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td>YAML</td><td>"YAML Ain't Markup Language" (recursive) — originally "Yet Another Markup Language"</td></tr>
+<tr><td><code>docker compose</code></td><td>Modern form, built into Docker (space)</td></tr>
+<tr><td><code>docker-compose</code></td><td>The old standalone tool (hyphen); still the usual <em>filename</em></td></tr>
+</tbody>
+</table>
+
+<p class="source-note">Sources: <a href="https://docs.docker.com/reference/compose-file/services/" target="_blank" rel="noopener">Docker Compose services reference</a> · <a href="https://docs.docker.com/reference/compose-file/version-and-name/" target="_blank" rel="noopener">version &amp; name elements</a> · <a href="https://yaml.org/about/" target="_blank" rel="noopener">yaml.org</a>.</p>
+</article>
+</body>
+</html>
